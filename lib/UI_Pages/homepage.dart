@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_ecom/UI_Pages/AppConstant.dart';
+import 'package:flutter_ecom/AppConstant/AppConstant.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});

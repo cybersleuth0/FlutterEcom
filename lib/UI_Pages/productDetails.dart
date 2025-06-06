@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_ecom/AppConstant/AppConstant.dart';
 
 class ProductDetails extends StatefulWidget {
   const ProductDetails({super.key});
@@ -319,7 +320,8 @@ class _ProductDetailsState extends State<ProductDetails> {
                     Expanded(
                       child: ElevatedButton(
                         onPressed: () {
-                          // Handle add to cart action
+                          Navigator.pushNamed(context,
+                              AppRoutes.ROUTE_CART_PAGE);
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xffff650e),
