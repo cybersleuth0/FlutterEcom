@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_ecom/UI_Pages/productDetails.dart';
+import 'package:flutter_ecom/UI_Pages/AppConstant.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
@@ -42,7 +42,7 @@ class _HomepageState extends State<Homepage> {
     return Scaffold(
       backgroundColor: Color(0xffe3e3e3),
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(kToolbarHeight + 20),
+        preferredSize: Size.fromHeight(kToolbarHeight),
         child: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
@@ -188,9 +188,9 @@ class _HomepageState extends State<Homepage> {
                   // crossAxisCount: Defines the number of columns in the grid.
                   crossAxisCount: 2,
                   // Sets the grid to have 2 columns.
-                  crossAxisSpacing: 16.0,
+                  crossAxisSpacing: 15.0,
                   // Sets the horizontal spacing between columns to 16.0 pixels.
-                  mainAxisSpacing: 16.0,
+                  mainAxisSpacing: 15.0,
                   // Sets the vertical spacing between rows to 16.0 pixels.
                   childAspectRatio:
                       0.75, // Sets the ratio of width to height for each child item in the grid.
@@ -199,9 +199,9 @@ class _HomepageState extends State<Homepage> {
                 itemBuilder: (context, index) {
                   return InkWell(
                     onTap: () {
-                      Navigator.push(
+                      Navigator.pushNamed(
                         context,
-                        MaterialPageRoute(builder: (context) => const ProductDetails()),
+                          AppRoutes.ROUTE_PRODUCT_DETAILSPAGE
                       );
                     },
                     child: Card(
