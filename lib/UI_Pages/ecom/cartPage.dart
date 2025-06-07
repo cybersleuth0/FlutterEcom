@@ -153,15 +153,13 @@ class _CartpageState extends State<Cartpage> {
                                     borderRadius: BorderRadius.circular(8),
                                     child: Container(
                                       padding: EdgeInsets.all(4),
-                                      // Add some padding inside the button
                                       decoration: BoxDecoration(
                                         color: Colors.grey[200],
-                                        // Lighter color for buttons
                                         borderRadius: BorderRadius.circular(8),
                                         border: Border.all(
                                           color: Colors.grey[300]!,
                                           width: 1,
-                                        ), // Subtle border
+                                        ),
                                       ),
                                       child: Icon(
                                         Icons.add,

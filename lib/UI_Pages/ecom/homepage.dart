@@ -355,7 +355,7 @@ class _HomepageState extends State<Homepage> {
                   color: Colors.grey,
                   onPressed: () {},
                 ),
-                const SizedBox(width: 40), // The dummy child
+                const SizedBox(width: 40),
                 IconButton(
                   icon: const Icon(CupertinoIcons.chat_bubble_text),
                   color: Colors.grey,
