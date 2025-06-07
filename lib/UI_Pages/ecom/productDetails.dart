@@ -45,9 +45,9 @@ class _ProductDetailsState extends State<ProductDetails> {
                       Navigator.pop(context);
                     },
                     child: const Icon(CupertinoIcons.back)),
-                const Spacer(), // Pushes the following icons to the end
+                const Spacer(),
                 const Padding(
-                  padding: EdgeInsets.only(right: 16.0), // Add some spacing between icons
+                  padding: EdgeInsets.only(right: 16.0),
                   child: Icon(Icons.share),
                 ),
                 const Icon(CupertinoIcons.heart),

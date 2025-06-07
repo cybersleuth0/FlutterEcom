@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_ecom/UI_Pages/cartPage.dart';
-import 'package:flutter_ecom/UI_Pages/homepage.dart';
-import 'package:flutter_ecom/UI_Pages/productDetails.dart';
+import 'package:flutter_ecom/UI_Pages/ecom/cartPage.dart';
+import 'package:flutter_ecom/UI_Pages/ecom/homepage.dart';
+import 'package:flutter_ecom/UI_Pages/ecom/productDetails.dart';
 
 class AppRoutes {
   static const String ROUTE_HOMEPAGE = "/homepage";
