@@ -39,7 +39,7 @@ class _ProductDetailsState extends State<ProductDetails> {
             height: kToolbarHeight + 10,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
+              children: [
                 GestureDetector(
                     onTap: () {
                       Navigator.pop(context);
