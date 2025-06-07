@@ -296,8 +296,8 @@ class _HomepageState extends State<Homepage> {
                             ],
                           ),
                           Positioned(
-                            top: 8.0,
-                            right: 8.0,
+                            top: 0,
+                            right: 0,
                             child: Container(
                               padding: const EdgeInsets.all(4.0),
                               decoration: BoxDecoration(
