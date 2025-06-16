@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_ecom/AppConstant/AppConstant.dart';
+import 'package:flutter_ecom/utils/constants/AppConstant.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
@@ -184,16 +184,11 @@ class _HomepageState extends State<Homepage> {
               GridView.builder(
                 physics: NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  // crossAxisCount: Defines the number of columns in the grid.
-                  crossAxisCount: 2,
-                  // Sets the grid to have 2 columns.
-                  crossAxisSpacing: 15.0,
-                  // Sets the horizontal spacing between columns to 16.0 pixels.
-                  mainAxisSpacing: 15.0,
-                  // Sets the vertical spacing between rows to 16.0 pixels.
-                  childAspectRatio:
-                      0.75, // Sets the ratio of width to height for each child item in the grid.
+                gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                  maxCrossAxisExtent: 200.0,
+                  crossAxisSpacing: 15.0, // Sets the horizontal spacing between columns
+                  mainAxisSpacing: 15.0, // Sets the vertical spacing between rows
+                  childAspectRatio: 0.75, // Sets the ratio of width to height for each child item in the grid.
                 ),
                 itemCount: 10,
                 itemBuilder: (context, index) {
