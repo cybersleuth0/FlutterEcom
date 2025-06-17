@@ -298,7 +298,10 @@ class _HomepageState extends State<Homepage> {
                               decoration: BoxDecoration(
                                 color: Color(0xffff650e),
                                 shape: BoxShape.rectangle,
-                                borderRadius: BorderRadius.circular(8.0),
+                                borderRadius: BorderRadius.only(
+                                  topRight: Radius.circular(16),
+                                  bottomLeft: Radius.circular(8),
+                                ),
                               ),
                               child: const Icon(
                                 CupertinoIcons.heart,
@@ -331,7 +334,7 @@ class _HomepageState extends State<Homepage> {
       ),
       bottomNavigationBar: AnimatedContainer(
         duration: const Duration(milliseconds: 300),
-        height: _isVisible ? 90.0 : 0.0,
+        height: _isVisible ? 80.0 : 0.0,
         child: BottomAppBar(
           shape: const CircularNotchedRectangle(),
           notchMargin: 8.0,

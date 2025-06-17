@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_ecom/utils/constants/AppConstant.dart';
 
 class SignupPage extends StatefulWidget {
   const SignupPage({super.key});
@@ -109,7 +110,8 @@ class _SignupPageState extends State<SignupPage> {
             const SizedBox(height: 24.0),
             ElevatedButton(
               onPressed: () {
-                // Handle signup logic
+                Navigator.pushReplacementNamed(
+                    context, AppRoutes.ROUTE_HOMEPAGE);
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xffff650e),
