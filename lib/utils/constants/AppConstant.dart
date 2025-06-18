@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_ecom/UI/Auth/Signup_page.dart';
 
+import '../../UI/Signup/Signup_page.dart';
 import '../../UI/ecom/cartPage.dart';
 import '../../UI/ecom/homepage.dart';
 import '../../UI/ecom/productDetails.dart';
