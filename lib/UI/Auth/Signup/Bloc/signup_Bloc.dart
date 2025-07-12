@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_ecom/UI/Signup/Bloc/signup_Event.dart';
-import 'package:flutter_ecom/UI/Signup/Bloc/signup_State.dart';
+import 'package:flutter_ecom/UI/Auth/Signup/Bloc/signup_Event.dart';
+import 'package:flutter_ecom/UI/Auth/Signup/Bloc/signup_State.dart';
 import 'package:flutter_ecom/data/remote/repositories/user_repo.dart';
 
 class Signup_Bloc extends Bloc<Signup_Event, Signup_State> {

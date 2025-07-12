@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 
-import '../../UI/Signup/Signup_page.dart';
+import '../../UI/Auth/Login/login_page.dart';
+import '../../UI/Auth/Signup/Signup_page.dart';
 import '../../UI/ecom/cartPage.dart';
-import '../../UI/ecom/homepage.dart';
+import '../../UI/ecom/dashboard/homepage.dart';
 import '../../UI/ecom/productDetails.dart';
 
 class AppRoutes {
@@ -16,7 +17,7 @@ class AppRoutes {
     ROUTE_HOMEPAGE: (context) => Homepage(),
     ROUTE_PRODUCT_DETAILSPAGE: (context) => ProductDetails(),
     ROUTE_CART_PAGE: (context) => Cartpage(),
-    // ROUTE_LOGINPAGE: (context) => LoginPage(),
+    ROUTE_LOGINPAGE: (context) => LoginPage(),
     ROUTE_SIGNUP: (context) => SignupPage(),
   };
 }

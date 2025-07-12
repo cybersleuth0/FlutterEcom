@@ -22,7 +22,17 @@ class UserRepo {
     }
 
   }
-  loginUser() {
 
+  Future<dynamic> loginUser({required Map<String, dynamic> bodyParams}) async {
+    try {
+      dynamic res = await apiHelper.postApi(
+          url: AppUrls.loginUrl,
+          isAuth: true,
+          params: bodyParams
+      );
+      return res;
+    } catch (e) {
+      rethrow;
+    }
   }
 }

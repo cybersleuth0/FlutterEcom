@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'app_exception.dart';
 
@@ -16,7 +17,8 @@ class ApiHelper {
   }) async {
     if (!isAuth) {
       //we will get the token from the shared preference
-      String token = "";
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String token = prefs.getString("token") ?? "";
       mHeaders!['Authorization'] = 'Bearer $token';
     }
     try {

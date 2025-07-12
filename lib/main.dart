@@ -1,19 +1,43 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_ecom/UI/Signup/Bloc/signup_Bloc.dart';
+import 'package:flutter_ecom/UI/Auth/Login/Bloc/login_Bloc.dart';
+import 'package:flutter_ecom/UI/ecom/dashboard/Bloc/product_bloc.dart';
 import 'package:flutter_ecom/data/remote/helper/api_helper.dart';
 import 'package:flutter_ecom/data/remote/repositories/user_repo.dart';
 import 'package:flutter_ecom/utils/constants/AppConstant.dart';
+
+import 'UI/Auth/Signup/Bloc/signup_Bloc.dart';
+import 'data/remote/repositories/product_repo.dart';
 
 void main() {
   runApp(
     MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) =>
-            Signup_Bloc(userRepo: UserRepo(apiHelper: ApiHelper())))
+            Signup_Bloc(userRepo: UserRepo(apiHelper: ApiHelper()))),
+        BlocProvider(create: (context) =>
+            Signin_Bloc(userRepo: UserRepo(apiHelper: ApiHelper()))),
+        BlocProvider(create: (context) =>
+            ProductBloc(productRepo: ProductRepo(apiHelper: ApiHelper())))
+
+
       ],
       child: MaterialApp(
-        initialRoute: AppRoutes.ROUTE_SIGNUP,
+        themeMode: ThemeMode.system,
+        //Dark theme
+        darkTheme: ThemeData.dark(
+            useMaterial3: true
+        ),
+        theme: ThemeData(
+            useMaterial3: true,
+            //light Theme
+            textTheme: TextTheme(
+              bodyMedium: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              bodySmall: TextStyle(fontSize: 16),
+
+            )
+        ),
+        initialRoute: AppRoutes.ROUTE_LOGINPAGE,
         routes: AppRoutes.getRoutes(),
         debugShowCheckedModeBanner: false,
       ),

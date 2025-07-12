@@ -1,6 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_ecom/UI/ecom/dashboard/Bloc/product_bloc.dart';
+import 'package:flutter_ecom/UI/ecom/dashboard/Bloc/product_event.dart';
+import 'package:flutter_ecom/UI/ecom/dashboard/Bloc/product_state.dart';
 import 'package:flutter_ecom/utils/constants/AppConstant.dart';
 
 class Homepage extends StatefulWidget {
@@ -17,6 +21,7 @@ class _HomepageState extends State<Homepage> {
   @override
   void initState() {
     super.initState();
+    context.read<ProductBloc>().add(GetAllProductsEvent());
     _scrollController = ScrollController();
     _scrollController.addListener(() {
       // If the user scrolls down (reverse direction)
@@ -69,53 +74,65 @@ class _HomepageState extends State<Homepage> {
         controller: _scrollController,
         child: Padding(
           padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              //Searchbar
-              Padding(
+          child: BlocBuilder<ProductBloc, ProductState>(
+            builder: (context, state) {
+              if (state is ProductLoadingState) {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              if (state is ProductSuccessState) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    //Searchbar
+                    Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8.0),
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  decoration: BoxDecoration(
-                    color: Colors.grey[200],
-                    borderRadius: BorderRadius.circular(30.0),
-                  ),
-                  child: Row(
-                    children: [
-                      Icon(CupertinoIcons.search, color: Colors.grey[600]),
-                      const SizedBox(width: 10),
-                      Expanded(
-                        child: TextField(
-                          decoration: InputDecoration(
-                            hintText: "Search...",
-                            border: InputBorder.none,
-                            hintStyle: TextStyle(color: Colors.grey[600]),
-                          ),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        decoration: BoxDecoration(
+                          color: Colors.grey[200],
+                          borderRadius: BorderRadius.circular(30.0),
+                        ),
+                        child: Row(
+                          children: [
+                            Icon(
+                                CupertinoIcons.search, color: Colors.grey[600]),
+                            const SizedBox(width: 10),
+                            Expanded(
+                              child: TextField(
+                                decoration: InputDecoration(
+                                  hintText: "Search...",
+                                  border: InputBorder.none,
+                                  hintStyle: TextStyle(color: Colors.grey[600]),
+                                ),
+                              ),
+                            ),
+                            Container(
+                              height: 20,
+                              width: 1,
+                              color: Colors.grey[400],
+                              margin: const EdgeInsets.symmetric(
+                                  horizontal: 8.0),
+                            ),
+                            const Icon(
+                              CupertinoIcons.slider_horizontal_3,
+                              color: Colors.black,
+                            ),
+                          ],
                         ),
                       ),
-                      Container(
-                        height: 20,
-                        width: 1,
-                        color: Colors.grey[400],
-                        margin: const EdgeInsets.symmetric(horizontal: 8.0),
-                      ),
-                      const Icon(
-                        CupertinoIcons.slider_horizontal_3,
-                        color: Colors.black,
-                      ),
-                    ],
-                  ),
-                ),
               ),
               const SizedBox(height: 16.0),
               // Carousel Slider Placeholder
               Container(
                 height: 200,
                 color: Colors.grey[200],
-                child: const Center(child: Text("Carousel Slider Placeholder")),
+                child: const Center(
+                    child: Text("Carousel Slider Placeholder")),
               ),
               const SizedBox(height: 16.0),
+                    Text(state.products[0].name ?? "No Name"),
               // Horizontal ListView for Category
               SizedBox(
                 height: 120,
@@ -128,7 +145,8 @@ class _HomepageState extends State<Homepage> {
                     String imageUrl =
                         "https://cdn.dummyjson.com/products/images/vehicle/Charger%20SXT%20RWD/thumbnail.png";
                     return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8.0),
                       child: Column(
                         children: [
                           CircleAvatar(
@@ -168,7 +186,8 @@ class _HomepageState extends State<Homepage> {
                 children: [
                   const Text(
                     "Special offer for you",
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 18,
+                        fontWeight: FontWeight.bold),
                   ),
                   TextButton(
                     onPressed: () {},
@@ -186,16 +205,18 @@ class _HomepageState extends State<Homepage> {
                 shrinkWrap: true,
                 gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                   maxCrossAxisExtent: 200.0,
-                  crossAxisSpacing: 15.0, // Sets the horizontal spacing between columns
-                  mainAxisSpacing: 15.0, // Sets the vertical spacing between rows
+                  crossAxisSpacing: 15.0,
+                  // Sets the horizontal spacing between columns
+                  mainAxisSpacing: 15.0,
+                  // Sets the vertical spacing between rows
                   childAspectRatio: 0.75, // Sets the ratio of width to height for each child item in the grid.
                 ),
-                itemCount: 10,
+                itemCount: state.products.length,
                 itemBuilder: (context, index) {
                   return InkWell(
                     onTap: () {
                       Navigator.pushNamed(
-                        context,
+                          context,
                           AppRoutes.ROUTE_PRODUCT_DETAILSPAGE
                       );
                     },
@@ -212,7 +233,8 @@ class _HomepageState extends State<Homepage> {
                               //image
                               Expanded(
                                 child: ClipRRect(
-                                  borderRadius: const BorderRadius.vertical(
+                                  borderRadius: const BorderRadius
+                                      .vertical(
                                     top: Radius.circular(15.0),
                                   ),
                                   child: Image.network(
@@ -226,7 +248,7 @@ class _HomepageState extends State<Homepage> {
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Text(
-                                  "Product ${index + 1}",
+                                  state.products[index].name ?? "No Name",
                                   style: const TextStyle(
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -239,11 +261,12 @@ class _HomepageState extends State<Homepage> {
                                 ),
                                 child: Row(
                                   mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
                                       "\$${(index + 1) * 10}",
-                                      style: const TextStyle(color: Colors.green),
+                                      style: const TextStyle(
+                                          color: Colors.green),
                                     ),
                                     Row(
                                       children: [
@@ -317,7 +340,15 @@ class _HomepageState extends State<Homepage> {
                 },
               ),
               const SizedBox(height: 16.0),
-            ],
+                  ],
+                );
+              }
+              if (state is ProductFailureState) {}
+              return
+                Container
+                  (
+                );
+            },
           ),
         ),
       ),
