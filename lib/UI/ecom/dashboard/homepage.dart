@@ -93,7 +93,15 @@ class _HomepageState extends State<Homepage> {
           child: BlocBuilder<ProductBloc, ProductState>(
             builder: (context, state) {
               if (state is ProductLoadingState) {
-                return Center(child: CircularProgressIndicator());
+                return Center(
+                  child: CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                      Color(0xffff650e),
+                    ),
+                    strokeWidth: 3,
+                    backgroundColor: Colors.white,
+                  ),
+                );
               }
               if (state is ProductSuccessState) {
                 return Column(
@@ -144,87 +152,92 @@ class _HomepageState extends State<Homepage> {
                     ),
                     const SizedBox(height: 16.0),
                     // Carousel Slider
-                    Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20.0),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.3),
-                            spreadRadius: 2,
-                            blurRadius: 8,
-                            offset: const Offset(0, 4),
-                          ),
-                        ],
-                      ),
-                      child: Stack(
-                        children: [
-                          ClipRRect(
+                    StatefulBuilder(
+                      builder: (context, ss) {
+                        return Container(
+                          decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20.0),
-                            child: CarouselSlider(
-                              items: bannerImages.map((eachImg) {
-                                return ClipRRect(
-                                  borderRadius: BorderRadius.circular(20.0),
-                                  child: Image.network(
-                                    eachImg,
-                                    fit: BoxFit.fill,
-                                  ),
-                                );
-                              }).toList(),
-                              options: CarouselOptions(
-                                onPageChanged: (index, x) {
-                                  setState(() {
-                                    _currentIndex = index;
-                                  });
-                                },
-                                autoPlay: true,
-                                aspectRatio: 16 / 9,
-                                enlargeCenterPage: true,
-                                viewportFraction: 1.0,
-                                autoPlayCurve: Curves.fastOutSlowIn,
-                                enlargeStrategy: CenterPageEnlargeStrategy
-                                    .height, // Optional: for a different enlarge effect
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.3),
+                                spreadRadius: 2,
+                                blurRadius: 8,
+                                offset: const Offset(0, 4),
                               ),
-                            ),
+                            ],
                           ),
-                          SizedBox(height: 10),
-                          Positioned(
-                            bottom: -15,
-                            left: 0,
-                            right: 0,
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                bottom: 16.0,
-                                right: 16.0,
-                              ),
-                              child: Center(
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 12.0,
-                                    vertical: 6.0,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: Colors.black.withOpacity(0.5),
-                                    borderRadius: BorderRadius.circular(20.0),
-                                  ),
-                                  child: CarouselIndicator(
-                                    width: 8,
-                                    height: 8,
-                                    space: 8,
-                                    cornerRadius: 10,
-                                    color: Colors.white.withOpacity(0.5),
-                                    activeColor: Colors.white,
-                                    count: bannerImages.length,
-                                    index: _currentIndex,
+                          child: Stack(
+                            children: [
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(20.0),
+                                child: CarouselSlider(
+                                  items: bannerImages.map((eachImg) {
+                                    return ClipRRect(
+                                      borderRadius: BorderRadius.circular(20.0),
+                                      child: Image.network(
+                                        eachImg,
+                                        fit: BoxFit.fill,
+                                      ),
+                                    );
+                                  }).toList(),
+                                  options: CarouselOptions(
+                                    onPageChanged: (index, _) {
+                                      ss(() {
+                                        _currentIndex = index;
+                                      });
+                                    },
+                                    autoPlay: true,
+                                    aspectRatio: 16 / 9,
+                                    enlargeCenterPage: true,
+                                    viewportFraction: 1.0,
+                                    autoPlayCurve: Curves.fastOutSlowIn,
+                                    enlargeStrategy: CenterPageEnlargeStrategy
+                                        .height, // Optional: for a different enlarge effect
                                   ),
                                 ),
                               ),
-                            ),
+                              SizedBox(height: 10),
+                              Positioned(
+                                bottom: -15,
+                                left: 0,
+                                right: 0,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                    bottom: 16.0,
+                                    right: 16.0,
+                                  ),
+                                  child: Center(
+                                    child: Container(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 12.0,
+                                        vertical: 6.0,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: Colors.black.withOpacity(0.5),
+                                        borderRadius: BorderRadius.circular(
+                                          20.0,
+                                        ),
+                                      ),
+                                      child: CarouselIndicator(
+                                        width: 8,
+                                        height: 8,
+                                        space: 8,
+                                        cornerRadius: 10,
+                                        color: Colors.white.withOpacity(0.5),
+                                        activeColor: Colors.white,
+                                        count: bannerImages.length,
+                                        index: _currentIndex,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
+                        );
+                      },
                     ),
                     const SizedBox(height: 10.0),
-                    //Text(state.products[0].name!),
                     // Horizontal ListView for Category
                     SizedBox(
                       height: 120,
