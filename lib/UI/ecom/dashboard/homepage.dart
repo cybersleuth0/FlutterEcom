@@ -1,3 +1,4 @@
+import 'package:carousel_indicator/carousel_indicator.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -25,6 +26,7 @@ class _HomepageState extends State<Homepage> {
   ];
   bool _isVisible = true;
   late ScrollController _scrollController;
+  int _currentIndex = 0;
 
   @override
   void initState() {
@@ -150,33 +152,78 @@ class _HomepageState extends State<Homepage> {
                             color: Colors.grey.withOpacity(0.3),
                             spreadRadius: 2,
                             blurRadius: 8,
-                            offset: const Offset(0, 4,
+                            offset: const Offset(0, 4),
+                          ),
+                        ],
+                      ),
+                      child: Stack(
+                        children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(20.0),
+                            child: CarouselSlider(
+                              items: bannerImages.map((eachImg) {
+                                return ClipRRect(
+                                  borderRadius: BorderRadius.circular(20.0),
+                                  child: Image.network(
+                                    eachImg,
+                                    fit: BoxFit.fill,
+                                  ),
+                                );
+                              }).toList(),
+                              options: CarouselOptions(
+                                onPageChanged: (index, x) {
+                                  setState(() {
+                                    _currentIndex = index;
+                                  });
+                                },
+                                autoPlay: true,
+                                aspectRatio: 16 / 9,
+                                enlargeCenterPage: true,
+                                viewportFraction: 1.0,
+                                autoPlayCurve: Curves.fastOutSlowIn,
+                                enlargeStrategy: CenterPageEnlargeStrategy
+                                    .height, // Optional: for a different enlarge effect
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 10),
+                          Positioned(
+                            bottom: -15,
+                            left: 0,
+                            right: 0,
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                bottom: 16.0,
+                                right: 16.0,
+                              ),
+                              child: Center(
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 12.0,
+                                    vertical: 6.0,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: Colors.black.withOpacity(0.5),
+                                    borderRadius: BorderRadius.circular(20.0),
+                                  ),
+                                  child: CarouselIndicator(
+                                    width: 8,
+                                    height: 8,
+                                    space: 8,
+                                    cornerRadius: 10,
+                                    color: Colors.white.withOpacity(0.5),
+                                    activeColor: Colors.white,
+                                    count: bannerImages.length,
+                                    index: _currentIndex,
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
                         ],
                       ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(20.0),
-                        child: CarouselSlider(
-                          items: bannerImages.map((eachImg) {
-                            return ClipRRect(
-                              borderRadius: BorderRadius.circular(20.0,),
-                              child: Image.network(eachImg, fit: BoxFit.fill),
-                            );
-                          }).toList(),
-                          options: CarouselOptions(
-                            autoPlay: true,
-                            aspectRatio: 16 / 9,
-                            enlargeCenterPage: true,
-                            viewportFraction: 1.0,
-                            autoPlayCurve: Curves.fastOutSlowIn,
-                            enlargeStrategy: CenterPageEnlargeStrategy
-                                .height, // Optional: for a different enlarge effect
-                          ),
-                        ),
-                      ),
                     ),
-                    const SizedBox(height: 16.0),
+                    const SizedBox(height: 10.0),
                     //Text(state.products[0].name!),
                     // Horizontal ListView for Category
                     SizedBox(
@@ -202,10 +249,10 @@ class _HomepageState extends State<Homepage> {
                                   // Placeholder color
                                   child: imageUrl.isEmpty
                                       ? const Icon(
-                                    Icons.image,
-                                    size: 40,
-                                    color: Colors.grey,
-                                  )
+                                          Icons.image,
+                                          size: 40,
+                                          color: Colors.grey,
+                                        )
                                       : null,
                                 ),
                                 const SizedBox(height: 8.0),
@@ -258,7 +305,7 @@ class _HomepageState extends State<Homepage> {
                         mainAxisSpacing: 10.0,
                         // Sets the vertical spacing between rows
                         childAspectRatio:
-                        2 /
+                            2 /
                             3, // Sets the ratio of width to height for each child item in the grid.
                       ),
                       itemCount: state.products.length,
@@ -293,9 +340,9 @@ class _HomepageState extends State<Homepage> {
                                     Expanded(
                                       child: ClipRRect(
                                         borderRadius:
-                                        const BorderRadius.vertical(
-                                          top: Radius.circular(15.0),
-                                        ),
+                                            const BorderRadius.vertical(
+                                              top: Radius.circular(15.0),
+                                            ),
                                         child: Center(
                                           child: Padding(
                                             padding: const EdgeInsets.all(8.0),
@@ -327,11 +374,10 @@ class _HomepageState extends State<Homepage> {
                                       ),
                                       child: Row(
                                         mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                            MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(
-                                            "\u{20B9} ${state.products[index]
-                                                .price!}",
+                                            "\u{20B9} ${state.products[index].price!}",
                                             style: GoogleFonts.lato(
                                               color: Colors.black45,
                                               fontSize: 16.0,
