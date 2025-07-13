@@ -9,7 +9,6 @@ class ProductRepo {
   Future<dynamic> getAllProducts() async {
     try {
       dynamic res = await apiHelper.postApi(url: AppUrls.productUrl);
-      print("from product repo ${res}");
       return res;
     } catch (e) {
       rethrow;

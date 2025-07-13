@@ -15,7 +15,7 @@ class Signin_Bloc extends Bloc<Signin_Event, Signin_State> {
         var res = await userRepo.loginUser(bodyParams: event.bodyParams);
         if (res["status"]) {
           SharedPreferences prefs = await SharedPreferences.getInstance();
-          prefs.setString("token", res["tokan"]);
+          prefs.setString("tokan", res["tokan"]);
           emit(LoginSuccessState());
         } else {
           emit(LoginFailureState(errorMsg: res["message"]));

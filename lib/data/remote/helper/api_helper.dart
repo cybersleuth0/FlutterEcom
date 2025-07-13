@@ -9,7 +9,7 @@ import 'app_exception.dart';
 class ApiHelper {
   getApi() {}
 
-  postApi({
+  Future<dynamic> postApi({
     required String url,
     Map<String, dynamic>? params,
     Map<String, String>? mHeaders,
@@ -18,8 +18,10 @@ class ApiHelper {
     if (!isAuth) {
       //we will get the token from the shared preference
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      String token = prefs.getString("token") ?? "";
-      mHeaders!['Authorization'] = 'Bearer $token';
+      String token = prefs.getString("tokan") ?? "";
+      mHeaders ??= {};
+      mHeaders["Authorization"] = "Bearer $token";
+      //print("Headers : $mHeaders");
     }
     try {
       var res = await http.post(

@@ -21,7 +21,7 @@ class ProductModel {
 
   factory ProductModel.fromJson(Map<String, dynamic> json) => ProductModel(
     id: json["id"],
-    name: json["name"],
+    name: json["name"].toString(),
     price: json["price"],
     image: json["image"],
     category_id: json["category_id"],
@@ -36,14 +36,24 @@ class ProductDataModel {
   String? message;
   bool? status;
 
-  ProductDataModel({required this.productsList, this.message, this.status});
+  ProductDataModel(
+      {required this.productsList, required this.message, required this.status});
+
+  // factory ProductDataModel.fromJson(Map<String, dynamic> json) =>
+  //     ProductDataModel(
+  //       message: json["message"],
+  //       status: json["status"],
+  //       productsList: List<ProductModel>.from(
+  //         json["data"].map((item) => ProductModel.fromJson(json)),
+  //       ),
+  //     );
 
   factory ProductDataModel.fromJson(Map<String, dynamic> json) =>
       ProductDataModel(
         message: json["message"],
         status: json["status"],
-        productsList: List<ProductModel>.from(
-          json["data"].map((item) => ProductModel.fromJson(json)),
-        ),
+        productsList: List<ProductModel>.from(json["data"]
+            .map((item) => ProductModel.fromJson(item))),
       );
+
 }

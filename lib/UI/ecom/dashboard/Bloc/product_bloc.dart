@@ -12,8 +12,10 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
       emit(ProductLoadingState());
       try {
         dynamic res = await productRepo.getAllProducts();
-        if (res["status"]) {
+        print("From product bloc ${res["status"]}");
+        if (res["status"] == true) {
           var dataModel = ProductDataModel.fromJson(res);
+          //print(dataModel);
           emit(ProductSuccessState(products: dataModel.productsList ?? []));
         } else {
           emit(ProductFailureState(errorMsg: res["message"]));

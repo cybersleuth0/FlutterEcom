@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -6,6 +7,7 @@ import 'package:flutter_ecom/UI/ecom/dashboard/Bloc/product_bloc.dart';
 import 'package:flutter_ecom/UI/ecom/dashboard/Bloc/product_event.dart';
 import 'package:flutter_ecom/UI/ecom/dashboard/Bloc/product_state.dart';
 import 'package:flutter_ecom/utils/constants/AppConstant.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
@@ -15,6 +17,12 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
+  final List<String> bannerImages = [
+    "https://www.shutterstock.com/image-vector/sale-banner-template-design-260nw-487080769.jpg",
+    "https://mir-s3-cdn-cf.behance.net/project_modules/fs/3ce709113389695.60269c221352f.jpg",
+    "https://t3.ftcdn.net/jpg/04/65/46/52/360_F_465465254_1pN9MGrA831idD6zIBL7q8rnZZpUCQTy.jpg",
+    "https://media.gettyimages.com/id/2007738539/vector/mega-sale-banner-template-on-the-abstract-pop-art-sunburst-background-vector-illustration.jpg?s=612x612&w=gi&k=20&c=lMAorzvjdOegGxEGlO0PeGI9AscvT6XTwPzJSz1rgdk=",
+  ];
   bool _isVisible = true;
   late ScrollController _scrollController;
 
@@ -30,7 +38,8 @@ class _HomepageState extends State<Homepage> {
         if (_isVisible) setState(() => _isVisible = false);
       }
       // If the user scrolls up (forward direction)
-      if (_scrollController.position.userScrollDirection == ScrollDirection.forward) {
+      if (_scrollController.position.userScrollDirection ==
+          ScrollDirection.forward) {
         if (!_isVisible) setState(() => _isVisible = true);
       }
     });
@@ -59,12 +68,17 @@ class _HomepageState extends State<Homepage> {
                 Icon(CupertinoIcons.square_grid_2x2),
                 Text(
                   "Home",
-                  style: TextStyle(
+                  style: GoogleFonts.lato(
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                Icon(CupertinoIcons.bell),
+                InkWell(
+                  onTap: () {
+                    context.read<ProductBloc>().add(GetAllProductsEvent());
+                  },
+                  child: Icon(CupertinoIcons.bell),
+                ),
               ],
             ),
           ),
@@ -77,9 +91,7 @@ class _HomepageState extends State<Homepage> {
           child: BlocBuilder<ProductBloc, ProductState>(
             builder: (context, state) {
               if (state is ProductLoadingState) {
-                return Center(
-                  child: CircularProgressIndicator(),
-                );
+                return Center(child: CircularProgressIndicator());
               }
               if (state is ProductSuccessState) {
                 return Column(
@@ -87,7 +99,7 @@ class _HomepageState extends State<Homepage> {
                   children: [
                     //Searchbar
                     Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
                       child: Container(
                         padding: const EdgeInsets.symmetric(horizontal: 16.0),
                         decoration: BoxDecoration(
@@ -97,14 +109,18 @@ class _HomepageState extends State<Homepage> {
                         child: Row(
                           children: [
                             Icon(
-                                CupertinoIcons.search, color: Colors.grey[600]),
+                              CupertinoIcons.search,
+                              color: Colors.grey[600],
+                            ),
                             const SizedBox(width: 10),
                             Expanded(
                               child: TextField(
                                 decoration: InputDecoration(
                                   hintText: "Search...",
                                   border: InputBorder.none,
-                                  hintStyle: TextStyle(color: Colors.grey[600]),
+                                  hintStyle: GoogleFonts.lato(
+                                    color: Colors.grey[600],
+                                  ),
                                 ),
                               ),
                             ),
@@ -113,7 +129,8 @@ class _HomepageState extends State<Homepage> {
                               width: 1,
                               color: Colors.grey[400],
                               margin: const EdgeInsets.symmetric(
-                                  horizontal: 8.0),
+                                horizontal: 8.0,
+                              ),
                             ),
                             const Icon(
                               CupertinoIcons.slider_horizontal_3,
@@ -122,232 +139,286 @@ class _HomepageState extends State<Homepage> {
                           ],
                         ),
                       ),
-              ),
-              const SizedBox(height: 16.0),
-              // Carousel Slider Placeholder
-              Container(
-                height: 200,
-                color: Colors.grey[200],
-                child: const Center(
-                    child: Text("Carousel Slider Placeholder")),
-              ),
-              const SizedBox(height: 16.0),
-                    Text(state.products[0].name ?? "No Name"),
-              // Horizontal ListView for Category
-              SizedBox(
-                height: 120,
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  scrollDirection: Axis.horizontal,
-                  itemCount: 10,
-                  itemBuilder: (context, index) {
-                    String productName = "Category ${index + 1}";
-                    String imageUrl =
-                        "https://cdn.dummyjson.com/products/images/vehicle/Charger%20SXT%20RWD/thumbnail.png";
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 8.0),
-                      child: Column(
-                        children: [
-                          CircleAvatar(
-                            radius: 30,
-                            backgroundImage: NetworkImage(imageUrl),
-                            backgroundColor: Colors.grey[300],
-                            // Placeholder color
-                            child: imageUrl.isEmpty
-                                ? const Icon(
+                    ),
+                    const SizedBox(height: 16.0),
+                    // Carousel Slider
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20.0),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.3),
+                            spreadRadius: 2,
+                            blurRadius: 8,
+                            offset: const Offset(0, 4,
+                            ),
+                          ),
+                        ],
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(20.0),
+                        child: CarouselSlider(
+                          items: bannerImages.map((eachImg) {
+                            return ClipRRect(
+                              borderRadius: BorderRadius.circular(20.0,),
+                              child: Image.network(eachImg, fit: BoxFit.fill),
+                            );
+                          }).toList(),
+                          options: CarouselOptions(
+                            autoPlay: true,
+                            aspectRatio: 16 / 9,
+                            enlargeCenterPage: true,
+                            viewportFraction: 1.0,
+                            autoPlayCurve: Curves.fastOutSlowIn,
+                            enlargeStrategy: CenterPageEnlargeStrategy
+                                .height, // Optional: for a different enlarge effect
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 16.0),
+                    //Text(state.products[0].name!),
+                    // Horizontal ListView for Category
+                    SizedBox(
+                      height: 120,
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        scrollDirection: Axis.horizontal,
+                        itemCount: 10,
+                        itemBuilder: (context, index) {
+                          String productName = "Category ${index + 1}";
+                          String imageUrl =
+                              "https://cdn.dummyjson.com/products/images/vehicle/Charger%20SXT%20RWD/thumbnail.png";
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8.0,
+                            ),
+                            child: Column(
+                              children: [
+                                CircleAvatar(
+                                  radius: 30,
+                                  backgroundImage: NetworkImage(imageUrl),
+                                  backgroundColor: Colors.grey[300],
+                                  // Placeholder color
+                                  child: imageUrl.isEmpty
+                                      ? const Icon(
                                     Icons.image,
                                     size: 40,
                                     color: Colors.grey,
                                   )
-                                : null,
-                          ),
-                          const SizedBox(height: 8.0),
-                          Text(
-                            productName,
-                            style: const TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500,
+                                      : null,
+                                ),
+                                const SizedBox(height: 8.0),
+                                Text(
+                                  productName,
+                                  style: GoogleFonts.lato(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ],
                             ),
-                            textAlign: TextAlign.center,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ],
+                          );
+                        },
                       ),
-                    );
-                  },
-                ),
-              ),
-              const SizedBox(height: 16.0),
-              // Special offer for you row
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    "Special offer for you",
-                    style: TextStyle(fontSize: 18,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  TextButton(
-                    onPressed: () {},
-                    child: const Text(
-                      "see all",
-                      style: TextStyle(color: Colors.blue),
                     ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 16.0),
-              // GridView for products
-              GridView.builder(
-                physics: NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                  maxCrossAxisExtent: 200.0,
-                  crossAxisSpacing: 15.0,
-                  // Sets the horizontal spacing between columns
-                  mainAxisSpacing: 15.0,
-                  // Sets the vertical spacing between rows
-                  childAspectRatio: 0.75, // Sets the ratio of width to height for each child item in the grid.
-                ),
-                itemCount: state.products.length,
-                itemBuilder: (context, index) {
-                  return InkWell(
-                    onTap: () {
-                      Navigator.pushNamed(
-                          context,
-                          AppRoutes.ROUTE_PRODUCT_DETAILSPAGE
-                      );
-                    },
-                    child: Card(
-                      elevation: 2.0,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15.0),
+                    const SizedBox(height: 16.0),
+                    // Special offer for you row
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Special offer for you",
+                          style: GoogleFonts.lato(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        TextButton(
+                          onPressed: () {},
+                          child: Text(
+                            "see all",
+                            style: GoogleFonts.lato(color: Colors.blue),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 16.0),
+                    // GridView for products
+                    GridView.builder(
+                      physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                        maxCrossAxisExtent: 200.0,
+                        crossAxisSpacing: 10.0,
+                        // Sets the horizontal spacing between columns
+                        mainAxisSpacing: 10.0,
+                        // Sets the vertical spacing between rows
+                        childAspectRatio:
+                        2 /
+                            3, // Sets the ratio of width to height for each child item in the grid.
                       ),
-                      child: Stack(
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              //image
-                              Expanded(
-                                child: ClipRRect(
-                                  borderRadius: const BorderRadius
-                                      .vertical(
-                                    top: Radius.circular(15.0),
-                                  ),
-                                  child: Image.network(
-                                    "https://cdn.dummyjson.com/products/images/beauty/Essence%20Mascara%20Lash%20Princess/thumbnail.png",
-                                    fit: BoxFit.cover,
-                                    width: double.infinity,
-                                  ),
+                      itemCount: state.products.length,
+                      itemBuilder: (context, index) {
+                        return InkWell(
+                          onTap: () {
+                            Navigator.pushNamed(
+                              context,
+                              AppRoutes.ROUTE_PRODUCT_DETAILSPAGE,
+                            );
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.all(8.0),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(15.0),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.3),
+                                  spreadRadius: 1,
+                                  blurRadius: 5,
+                                  offset: Offset(0, 2),
                                 ),
-                              ),
-                              //product name
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                  state.products[index].name ?? "No Name",
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                              //product price
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 8.0,
-                                ),
-                                child: Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
+                              ],
+                            ),
+                            child: Stack(
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(
-                                      "\$${(index + 1) * 10}",
-                                      style: const TextStyle(
-                                          color: Colors.green),
+                                    //Product image
+                                    Expanded(
+                                      child: ClipRRect(
+                                        borderRadius:
+                                        const BorderRadius.vertical(
+                                          top: Radius.circular(15.0),
+                                        ),
+                                        child: Center(
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Image.network(
+                                              state.products[index].image!,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
                                     ),
-                                    Row(
-                                      children: [
-                                        Container(
-                                          width: 12,
-                                          height: 12,
-                                          decoration: const BoxDecoration(
-                                            color: Colors.orange,
-                                            shape: BoxShape.circle,
-                                          ),
+                                    //product name
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text(
+                                        state.products[index].name!
+                                            .toUpperCase(),
+                                        style: GoogleFonts.lato(
+                                          fontSize: 15.0,
+                                          color: Colors.black87,
+                                          letterSpacing: 0.5,
+                                          fontWeight: FontWeight.bold,
                                         ),
-                                        const SizedBox(width: 2),
-                                        Container(
-                                          width: 12,
-                                          height: 12,
-                                          decoration: const BoxDecoration(
-                                            color: Colors.black,
-                                            shape: BoxShape.circle,
-                                          ),
-                                        ),
-                                        const SizedBox(width: 2),
-                                        Container(
-                                          width: 12,
-                                          height: 12,
-                                          decoration: const BoxDecoration(
-                                            color: Colors.red,
-                                            shape: BoxShape.circle,
-                                          ),
-                                        ),
-                                        const SizedBox(width: 4),
-                                        Container(
-                                          width: 12,
-                                          height: 12,
-                                          decoration: const BoxDecoration(
-                                            color: Colors.blue,
-                                            shape: BoxShape.circle,
-                                          ),
-                                        ),
-                                      ],
+                                      ),
                                     ),
+                                    //product price
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 8.0,
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            "\u{20B9} ${state.products[index]
+                                                .price!}",
+                                            style: GoogleFonts.lato(
+                                              color: Colors.black45,
+                                              fontSize: 16.0,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          Row(
+                                            children: [
+                                              Container(
+                                                width: 12,
+                                                height: 12,
+                                                decoration: const BoxDecoration(
+                                                  color: Colors.orange,
+                                                  shape: BoxShape.circle,
+                                                ),
+                                              ),
+                                              const SizedBox(width: 2),
+                                              Container(
+                                                width: 12,
+                                                height: 12,
+                                                decoration: const BoxDecoration(
+                                                  color: Colors.black,
+                                                  shape: BoxShape.circle,
+                                                ),
+                                              ),
+                                              const SizedBox(width: 2),
+                                              Container(
+                                                width: 12,
+                                                height: 12,
+                                                decoration: const BoxDecoration(
+                                                  color: Colors.red,
+                                                  shape: BoxShape.circle,
+                                                ),
+                                              ),
+                                              const SizedBox(width: 4),
+                                              Container(
+                                                width: 12,
+                                                height: 12,
+                                                decoration: const BoxDecoration(
+                                                  color: Colors.blue,
+                                                  shape: BoxShape.circle,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    const SizedBox(height: 8.0),
                                   ],
                                 ),
-                              ),
-                              const SizedBox(height: 8.0),
-                            ],
-                          ),
-                          Positioned(
-                            top: 0,
-                            right: 0,
-                            child: Container(
-                              padding: const EdgeInsets.all(4.0),
-                              decoration: BoxDecoration(
-                                color: Color(0xffff650e),
-                                shape: BoxShape.rectangle,
-                                borderRadius: BorderRadius.only(
-                                  topRight: Radius.circular(16),
-                                  bottomLeft: Radius.circular(8),
+                                Positioned(
+                                  top: 0,
+                                  right: 0,
+                                  child: Container(
+                                    padding: const EdgeInsets.all(4.0),
+                                    decoration: BoxDecoration(
+                                      color: Color(0xffff650e),
+                                      shape: BoxShape.rectangle,
+                                      borderRadius: BorderRadius.only(
+                                        topRight: Radius.circular(16),
+                                        bottomLeft: Radius.circular(8),
+                                      ),
+                                    ),
+                                    child: const Icon(
+                                      CupertinoIcons.heart,
+                                      color: Colors.white,
+                                      size: 20,
+                                    ),
+                                  ),
                                 ),
-                              ),
-                              child: const Icon(
-                                CupertinoIcons.heart,
-                                color: Colors.white,
-                                size: 20,
-                              ),
+                              ],
                             ),
                           ),
-                        ],
-                      ),
+                        );
+                      },
                     ),
-                  );
-                },
-              ),
-              const SizedBox(height: 16.0),
+                    const SizedBox(height: 16.0),
                   ],
                 );
               }
-              if (state is ProductFailureState) {}
-              return
-                Container
-                  (
+              if (state is ProductFailureState) {
+                return Center(
+                  child: Text(state.errorMsg, style: GoogleFonts.lato()),
                 );
+              }
+              return Container();
             },
           ),
         ),
