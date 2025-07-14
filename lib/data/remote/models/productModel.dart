@@ -36,24 +36,18 @@ class ProductDataModel {
   String? message;
   bool? status;
 
-  ProductDataModel(
-      {required this.productsList, required this.message, required this.status});
-
-  // factory ProductDataModel.fromJson(Map<String, dynamic> json) =>
-  //     ProductDataModel(
-  //       message: json["message"],
-  //       status: json["status"],
-  //       productsList: List<ProductModel>.from(
-  //         json["data"].map((item) => ProductModel.fromJson(json)),
-  //       ),
-  //     );
+  ProductDataModel({
+    required this.productsList,
+    required this.message,
+    required this.status,
+  });
 
   factory ProductDataModel.fromJson(Map<String, dynamic> json) =>
       ProductDataModel(
         message: json["message"],
         status: json["status"],
-        productsList: List<ProductModel>.from(json["data"]
-            .map((item) => ProductModel.fromJson(item))),
+        productsList: List<ProductModel>.from(
+          json["data"].map((item) => ProductModel.fromJson(item)),
+        ),
       );
-
 }

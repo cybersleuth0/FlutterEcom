@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_ecom/data/remote/models/productModel.dart';
 import 'package:flutter_ecom/utils/constants/AppConstant.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class ProductDetails extends StatefulWidget {
   const ProductDetails({super.key});
@@ -22,9 +24,11 @@ class _ProductDetailsState extends State<ProductDetails> {
     Colors.grey,
   ];
   int _productCount = 1;
+
   @override
-  // Main widget build method
   Widget build(BuildContext context) {
+    final detailedModel =
+        ModalRoute.of(context)!.settings.arguments as ProductModel;
     return Scaffold(
       backgroundColor: Color(0xffe3e3e3),
       appBar: AppBar(
@@ -61,25 +65,51 @@ class _ProductDetailsState extends State<ProductDetails> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               //Slider
-              Container(
-                height: 300,
-                color: Colors.grey[200],
-                child: const Center(child: Text("Carousel Slider Placeholder")),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(20.0),
+                child: Container(
+                  height: 300,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.3),
+                        spreadRadius: 2,
+                        blurRadius: 8,
+                        offset: Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  child: Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Image.network(
+                        detailedModel.image!,
+                        fit: BoxFit.contain,
+                      ),
+                    ),
+                  ),
+                ),
               ),
               const SizedBox(height: 16),
               //Product Name Text
-              const Text(
-                "Product Name",
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              //name
+              Text(
+                detailedModel.name!,
+                style: GoogleFonts.lato(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               const SizedBox(height: 8),
               //Seller name and product price
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
-                    "\$99.99",
-                    style: TextStyle(
+                  //price
+                  Text(
+                    "₹${detailedModel.price!}",
+                    style: GoogleFonts.roboto(
                       fontSize: 20,
                       color: Colors.green,
                       fontWeight: FontWeight.bold,
@@ -96,16 +126,16 @@ class _ProductDetailsState extends State<ProductDetails> {
                       Text.rich(
                         TextSpan(
                           children: [
-                            const TextSpan(
+                            TextSpan(
                               text: "Seller Name: ",
-                              style: TextStyle(
+                              style: GoogleFonts.openSans(
                                 fontSize: 18,
                                 color: Colors.black,
                               ),
                             ),
-                            const TextSpan(
+                            TextSpan(
                               text: "Ayush Shende",
-                              style: TextStyle(
+                              style: GoogleFonts.raleway(
                                 fontSize: 16,
                                 color: Colors.blueGrey,
                                 fontWeight: FontWeight.w500,
@@ -125,9 +155,9 @@ class _ProductDetailsState extends State<ProductDetails> {
                 children: [
                   const Icon(Icons.star, color: Colors.orange, size: 20),
                   const SizedBox(width: 4),
-                  const Text(
+                  Text(
                     "4.2",
-                    style: TextStyle(
+                    style: GoogleFonts.montserrat(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                       color: Colors.orange,
@@ -136,15 +166,19 @@ class _ProductDetailsState extends State<ProductDetails> {
                   const SizedBox(width: 8),
                   Text(
                     "(320 Reviews)",
-                    style: TextStyle(fontSize: 16, color: Colors.grey[600]),
+                    style: GoogleFonts.poppins(
+                        fontSize: 16, color: Colors.grey[600]),
                   ),
                 ],
               ),
               const SizedBox(height: 16),
               //Color Text
-              const Text(
+              Text(
                 "Color",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                style: GoogleFonts.lato(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
               const SizedBox(height: 8),
               // Color selection row
@@ -206,15 +240,14 @@ class _ProductDetailsState extends State<ProductDetails> {
                         children: [
                           Text(
                             _tabs[index],
-                            style: TextStyle(
+                            style: GoogleFonts.nunito(
                               fontSize: 16,
                               fontWeight: _selectedTabIndex == index
                                   ? FontWeight.bold
                                   : FontWeight.normal,
                               color: _selectedTabIndex == index
-                                  ? Colors
-                                  .white // Text color for selected tab
-                                  : Colors.grey[700],
+                                  ? Colors.white
+                                  : Colors.grey[700], // Text color for selected tab
                             ),
                           ),
                         ],
@@ -231,7 +264,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                   // Description Content
                   Text(
                     "This is a detailed description of the product. It highlights its key features, benefits, and specifications. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-                    style: TextStyle(
+                    style: GoogleFonts.openSans(
                       fontSize: 15,
                       color: Colors.grey[700],
                       height: 1.5, // Improves readability
@@ -240,7 +273,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                   // Specification Content
                   Text(
                     "Product Specifications: \n- Material: High-quality leather \n- Dimensions: 10cm x 20cm x 5cm \n- Weight: 200g \n- Color Options: Brown, Black, Blue, Yellow, Grey",
-                    style: TextStyle(
+                    style: GoogleFonts.poppins(
                       fontSize: 15,
                       color: Colors.grey[700],
                       height: 1.5,
@@ -249,7 +282,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                   // Review Content
                   Text(
                     "Customer Reviews: \n- User A: Great product, highly recommended! \n- User B: Good value for money. \n- User C: Satisfied with the purchase.",
-                    style: TextStyle(
+                    style: GoogleFonts.roboto(
                       fontSize: 15,
                       color: Colors.grey[700],
                       height: 1.5,
@@ -263,10 +296,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                 alignment: Alignment.bottomCenter,
                 child: Builder(
                   builder: (context) {
-                    final screenWidth = MediaQuery
-                        .of(context)
-                        .size
-                        .width;
+                    final screenWidth = MediaQuery.of(context).size.width;
 
                     final containerWidth = screenWidth > 600
                         ? screenWidth * 0.6
@@ -302,8 +332,8 @@ class _ProductDetailsState extends State<ProductDetails> {
                               flex: 2,
                               child: Container(
                                 padding: const EdgeInsets.symmetric(
-                                    horizontal: 10,
-                                    vertical: 6
+                                  horizontal: 10,
+                                  vertical: 6,
                                 ),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(30),
@@ -314,7 +344,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                                 ),
                                 child: Row(
                                   mainAxisAlignment:
-                                  MainAxisAlignment.spaceEvenly,
+                                      MainAxisAlignment.spaceEvenly,
                                   children: [
                                     GestureDetector(
                                       onTap: () {
@@ -336,7 +366,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                                       ),
                                       child: Text(
                                         _productCount.toString(),
-                                        style: const TextStyle(
+                                        style: GoogleFonts.lato(
                                           fontSize: 18,
                                           color: Colors.white,
                                           fontWeight: FontWeight.bold,
@@ -369,6 +399,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                                     context,
                                     AppRoutes.ROUTE_CART_PAGE,
                                   );
+
                                 },
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: const Color(0xffff650e),
@@ -381,9 +412,9 @@ class _ProductDetailsState extends State<ProductDetails> {
                                   ),
                                   minimumSize: const Size(double.infinity, 40),
                                 ),
-                                child: const Text(
+                                child: Text(
                                   "Add to Cart",
-                                  style: TextStyle(
+                                  style: GoogleFonts.montserrat(
                                     fontSize: 18,
                                     color: Colors.white,
                                   ),

@@ -237,54 +237,6 @@ class _HomepageState extends State<Homepage> {
                         );
                       },
                     ),
-                    const SizedBox(height: 10.0),
-                    // Horizontal ListView for Category
-                    SizedBox(
-                      height: 120,
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        scrollDirection: Axis.horizontal,
-                        itemCount: 10,
-                        itemBuilder: (context, index) {
-                          String productName = "Category ${index + 1}";
-                          String imageUrl =
-                              "https://cdn.dummyjson.com/products/images/vehicle/Charger%20SXT%20RWD/thumbnail.png";
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 8.0,
-                            ),
-                            child: Column(
-                              children: [
-                                CircleAvatar(
-                                  radius: 30,
-                                  backgroundImage: NetworkImage(imageUrl),
-                                  backgroundColor: Colors.grey[300],
-                                  // Placeholder color
-                                  child: imageUrl.isEmpty
-                                      ? const Icon(
-                                          Icons.image,
-                                          size: 40,
-                                          color: Colors.grey,
-                                        )
-                                      : null,
-                                ),
-                                const SizedBox(height: 8.0),
-                                Text(
-                                  productName,
-                                  style: GoogleFonts.lato(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ],
-                            ),
-                          );
-                        },
-                      ),
-                    ),
                     const SizedBox(height: 16.0),
                     // Special offer for you row
                     Row(
@@ -328,6 +280,7 @@ class _HomepageState extends State<Homepage> {
                             Navigator.pushNamed(
                               context,
                               AppRoutes.ROUTE_PRODUCT_DETAILSPAGE,
+                              arguments: state.products[index],
                             );
                           },
                           child: Container(
