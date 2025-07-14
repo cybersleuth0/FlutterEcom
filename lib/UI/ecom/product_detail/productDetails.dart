@@ -1,8 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_ecom/UI/ecom/product_detail/Bloc/cart_Event.dart';
+import 'package:flutter_ecom/UI/ecom/product_detail/Bloc/cart_State.dart';
 import 'package:flutter_ecom/data/remote/models/productModel.dart';
-import 'package:flutter_ecom/utils/constants/AppConstant.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+import 'Bloc/cart_Bloc.dart';
 
 class ProductDetails extends StatefulWidget {
   const ProductDetails({super.key});
@@ -167,7 +171,9 @@ class _ProductDetailsState extends State<ProductDetails> {
                   Text(
                     "(320 Reviews)",
                     style: GoogleFonts.poppins(
-                        fontSize: 16, color: Colors.grey[600]),
+                      fontSize: 16,
+                      color: Colors.grey[600],
+                    ),
                   ),
                 ],
               ),
@@ -247,7 +253,8 @@ class _ProductDetailsState extends State<ProductDetails> {
                                   : FontWeight.normal,
                               color: _selectedTabIndex == index
                                   ? Colors.white
-                                  : Colors.grey[700], // Text color for selected tab
+                                  : Colors
+                                        .grey[700], // Text color for selected tab
                             ),
                           ),
                         ],
@@ -263,7 +270,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                 children: [
                   // Description Content
                   Text(
-                    "This is a detailed description of the product. It highlights its key features, benefits, and specifications. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                    "This is a detailed description of the product_detail. It highlights its key features, benefits, and specifications. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
                     style: GoogleFonts.openSans(
                       fontSize: 15,
                       color: Colors.grey[700],
@@ -281,7 +288,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                   ),
                   // Review Content
                   Text(
-                    "Customer Reviews: \n- User A: Great product, highly recommended! \n- User B: Good value for money. \n- User C: Satisfied with the purchase.",
+                    "Customer Reviews: \n- User A: Great product_detail, highly recommended! \n- User B: Good value for money. \n- User C: Satisfied with the purchase.",
                     style: GoogleFonts.roboto(
                       fontSize: 15,
                       color: Colors.grey[700],
@@ -292,140 +299,194 @@ class _ProductDetailsState extends State<ProductDetails> {
               ),
               const SizedBox(height: 16),
               //add to cart button
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: Builder(
-                  builder: (context) {
-                    final screenWidth = MediaQuery.of(context).size.width;
+              BlocListener<CartBloc, CartState>(
+                listener: (context, state) {
+                  ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                  SnackBar snackBar;
+                  if (state is CartLoading_State) {
+                    snackBar = SnackBar(
+                      content: Row(
+                        children: [
+                          const CircularProgressIndicator(
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                              Colors.white,
+                            ),
+                          ),
+                          const SizedBox(width: 16),
+                          Text(
+                            "Adding to cart...",
+                            style: GoogleFonts.lato(color: Colors.white),
+                          ),
+                        ],
+                      ),
+                      backgroundColor: Colors.blueAccent,
+                      duration: const Duration(seconds: 5), // Keep it visible
+                    );
+                  } else if (state is CartSuccess_State) {
+                    Navigator.pop(context);
+                    snackBar = SnackBar(
+                      content: Text(
+                        "Added to cart successfully!",
+                        style: GoogleFonts.lato(color: Colors.white),
+                      ),
+                      backgroundColor: Colors.green,
+                    );
+                  } else if (state is CartError_State) {
+                    snackBar = SnackBar(
+                      content: Text(
+                        "Error: ${state.errorMsg}",
+                        style: GoogleFonts.lato(color: Colors.white),
+                      ),
+                      backgroundColor: Colors.redAccent,
+                    );
+                  } else {
+                    return; // Do nothing for other states
+                  }
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                },
+                child: Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Builder(
+                    builder: (context) {
+                      final screenWidth = MediaQuery.of(context).size.width;
 
-                    final containerWidth = screenWidth > 600
-                        ? screenWidth * 0.6
-                        : screenWidth * 0.8;
-                    final horizontalMargin = screenWidth > 600
-                        ? screenWidth * 0.08
-                        : screenWidth * 0.05;
-                    // | Screen Width     | Container Width | Horizontal Margin |
-                    // | ---------------- | --------------- | ----------------- |
-                    // | > 600px (tablet) | 60% of screen   | 8% of screen      |
-                    // | ≤ 600px (mobile) | 90% of screen   | 5% of screen      |
+                      final containerWidth = screenWidth > 600
+                          ? screenWidth * 0.6
+                          : screenWidth * 0.8;
+                      final horizontalMargin = screenWidth > 600
+                          ? screenWidth * 0.08
+                          : screenWidth * 0.05;
+                      // | Screen Width     | Container Width | Horizontal Margin |
+                      // | ---------------- | --------------- | ----------------- |
+                      // | > 600px (tablet) | 60% of screen   | 8% of screen      |
+                      // | ≤ 600px (mobile) | 90% of screen   | 5% of screen      |
 
-                    return Container(
-                      width: containerWidth,
-                      margin: EdgeInsets.symmetric(
-                        horizontal: horizontalMargin,
-                      ),
-                      decoration: const BoxDecoration(
-                        color: Colors.black,
-                        borderRadius: BorderRadius.all(Radius.circular(35)),
-                      ),
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 7,
-                        horizontal: 10,
-                      ),
-                      child: IntrinsicHeight(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            // Quantity selector
-                            Expanded(
-                              flex: 2,
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 10,
-                                  vertical: 6,
-                                ),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(30),
-                                  border: Border.all(
-                                    width: 2,
-                                    color: Colors.white,
+                      return Container(
+                        width: containerWidth,
+                        margin: EdgeInsets.symmetric(
+                          horizontal: horizontalMargin,
+                        ),
+                        decoration: const BoxDecoration(
+                          color: Colors.black,
+                          borderRadius: BorderRadius.all(Radius.circular(35)),
+                        ),
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 7,
+                          horizontal: 10,
+                        ),
+                        child: IntrinsicHeight(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              // Quantity selector
+                              Expanded(
+                                flex: 2,
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 10,
+                                    vertical: 6,
                                   ),
-                                ),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    GestureDetector(
-                                      onTap: () {
-                                        setState(() {
-                                          if (_productCount > 1) {
-                                            _productCount--;
-                                          }
-                                        });
-                                      },
-                                      child: const Icon(
-                                        CupertinoIcons.minus,
-                                        color: Colors.white,
-                                        size: 20,
-                                      ),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(30),
+                                    border: Border.all(
+                                      width: 2,
+                                      color: Colors.white,
                                     ),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 12.0,
-                                      ),
-                                      child: Text(
-                                        _productCount.toString(),
-                                        style: GoogleFonts.lato(
-                                          fontSize: 18,
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            if (_productCount > 1) {
+                                              _productCount--;
+                                            }
+                                          });
+                                        },
+                                        child: const Icon(
+                                          CupertinoIcons.minus,
                                           color: Colors.white,
-                                          fontWeight: FontWeight.bold,
+                                          size: 20,
                                         ),
                                       ),
-                                    ),
-                                    GestureDetector(
-                                      onTap: () {
-                                        setState(() {
-                                          _productCount++;
-                                        });
-                                      },
-                                      child: const Icon(
-                                        CupertinoIcons.add,
-                                        color: Colors.white,
-                                        size: 20,
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 12.0,
+                                        ),
+                                        child: Text(
+                                          _productCount.toString(),
+                                          style: GoogleFonts.lato(
+                                            fontSize: 18,
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
                                       ),
+                                      GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            _productCount++;
+                                          });
+                                        },
+                                        child: const Icon(
+                                          CupertinoIcons.add,
+                                          color: Colors.white,
+                                          size: 20,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 16),
+                              // Add to Cart Button
+                              Expanded(
+                                flex: 3,
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    context.read<CartBloc>().add(
+                                      AddtoCartEvent(
+                                        productId: int.parse(detailedModel.id!),
+                                        quantity: _productCount,
+                                      ),
+                                    );
+                                    // Navigator.pushNamed(
+                                    //   context,
+                                    //   AppRoutes.ROUTE_CART_PAGE,
+                                    // );
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: const Color(0xffff650e),
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: 12,
                                     ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            const SizedBox(width: 16),
-                            // Add to Cart Button
-                            Expanded(
-                              flex: 3,
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  Navigator.pushNamed(
-                                    context,
-                                    AppRoutes.ROUTE_CART_PAGE,
-                                  );
 
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: const Color(0xffff650e),
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: 12,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(30),
+                                    ),
+                                    minimumSize: const Size(
+                                      double.infinity,
+                                      40,
+                                    ),
                                   ),
-
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(30),
-                                  ),
-                                  minimumSize: const Size(double.infinity, 40),
-                                ),
-                                child: Text(
-                                  "Add to Cart",
-                                  style: GoogleFonts.montserrat(
-                                    fontSize: 18,
-                                    color: Colors.white,
+                                  child: Text(
+                                    "Add to Cart",
+                                    style: GoogleFonts.montserrat(
+                                      fontSize: 18,
+                                      color: Colors.white,
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
-                    );
-                  },
+                      );
+                    },
+                  ),
                 ),
               ),
               const SizedBox(height: 16),
