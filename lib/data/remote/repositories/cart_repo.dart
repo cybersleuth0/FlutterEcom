@@ -10,7 +10,7 @@ class CartRepo {
     required int productId,
     required int quantity,
   }) async {
-    var bodyparms = {"productId": productId, "quantity": quantity};
+    var bodyparms = {"product_id": productId, "quantity": quantity};
 
     try {
       var res = await apiHelper.postApi(

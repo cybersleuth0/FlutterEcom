@@ -21,7 +21,6 @@ class ApiHelper {
       String token = prefs.getString("tokan") ?? "";
       mHeaders ??= {};
       mHeaders["Authorization"] = "Bearer $token";
-      //print("Headers : $mHeaders");
     }
     try {
       var res = await http.post(
