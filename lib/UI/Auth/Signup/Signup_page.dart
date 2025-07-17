@@ -62,7 +62,9 @@ class _SignupPageState extends State<SignupPage> {
                     const Text(
                       'Sign Up',
                       style: TextStyle(
-                          fontSize: 24, fontWeight: FontWeight.bold),
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     const SizedBox(height: 8.0),
                     const Text(
@@ -234,7 +236,7 @@ class _SignupPageState extends State<SignupPage> {
                             onTap: () {
                               setState(() {
                                 isConfirmPasswordVisible =
-                                !isConfirmPasswordVisible;
+                                    !isConfirmPasswordVisible;
                               });
                             },
                             child: isConfirmPasswordVisible
@@ -258,66 +260,74 @@ class _SignupPageState extends State<SignupPage> {
                           setState(() {
                             isLoading = false;
                           });
-                          //Navigator.pop(context);
+                          Navigator.pop(context);
                           ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Row(
-                                  children: [
-                                    Icon(Icons.check_circle_outline,
-                                        color: Colors.white),
-                                    SizedBox(width: 8),
-                                    Text(
-                                      "Sign Up Successful",
-                                      style: TextStyle(color: Colors.white,
-                                          fontWeight: FontWeight.bold),
+                            SnackBar(
+                              content: Row(
+                                children: [
+                                  Icon(
+                                    Icons.check_circle_outline,
+                                    color: Colors.white,
+                                  ),
+                                  SizedBox(width: 8),
+                                  Text(
+                                    "Sign Up Successful",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
                                     ),
-                                  ],
-                                ),
-                                backgroundColor: Colors.green.shade600,
-                                behavior: SnackBarBehavior.floating,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12.0),
-                                ),
-                                margin: EdgeInsets.symmetric(
-                                    horizontal: 24, vertical: 16),
-                                elevation: 6.0,
-                                duration: Duration(seconds: 3),
-                                action: SnackBarAction(
-                                  label: 'OK',
-                                  textColor: Colors.white,
-                                  onPressed: () {},
-                                ),));
-                          Navigator.pushReplacementNamed(
-                            context,
-                            AppRoutes.ROUTE_HOMEPAGE,
+                                  ),
+                                ],
+                              ),
+                              backgroundColor: Colors.green.shade600,
+                              behavior: SnackBarBehavior.floating,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12.0),
+                              ),
+                              margin: EdgeInsets.symmetric(
+                                horizontal: 24,
+                                vertical: 16,
+                              ),
+                              elevation: 6.0,
+                              duration: Duration(seconds: 3),
+                            ),
                           );
                         }
                         if (state is SignupFailureState) {
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            content: Row(
-                              children: [
-                                Icon(Icons.error_outline, color: Colors.white),
-                                SizedBox(width: 8),
-                                Expanded(
-                                  child: Text(
-                                    state.errorMsg,
-                                    style: TextStyle(color: Colors.white,
-                                        fontWeight: FontWeight.bold),
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 2,
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Row(
+                                children: [
+                                  Icon(
+                                    Icons.error_outline,
+                                    color: Colors.white,
                                   ),
-                                ),
-                              ],
+                                  SizedBox(width: 8),
+                                  Expanded(
+                                    child: Text(
+                                      state.errorMsg,
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 2,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              backgroundColor: Colors.redAccent,
+                              behavior: SnackBarBehavior.floating,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12.0),
+                              ),
+                              margin: EdgeInsets.symmetric(
+                                horizontal: 24,
+                                vertical: 16,
+                              ),
+                              elevation: 6.0,
                             ),
-                            backgroundColor: Colors.redAccent,
-                            behavior: SnackBarBehavior.floating,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12.0),
-                            ),
-                            margin: EdgeInsets.symmetric(
-                                horizontal: 24, vertical: 16),
-                            elevation: 6.0,
-                          ));
+                          );
                           setState(() {
                             isLoading = false;
                           });
@@ -349,24 +359,22 @@ class _SignupPageState extends State<SignupPage> {
                         ),
                         child: isLoading
                             ? CircularProgressIndicator(
-                          constraints: BoxConstraints(
-                            minHeight: 25,
-                            minWidth: 25,
-                          ),
-                          padding: EdgeInsets.zero,
-                          color: Colors.white,
-                        ) : Text(
-                          'Sign Up',
-                          style: Theme
-                              .of(context)
-                              .textTheme
-                              .bodySmall!
-                              .copyWith(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
-                          ),
-                        ),
+                                constraints: BoxConstraints(
+                                  minHeight: 25,
+                                  minWidth: 25,
+                                ),
+                                padding: EdgeInsets.zero,
+                                color: Colors.white,
+                              )
+                            : Text(
+                                'Sign Up',
+                                style: Theme.of(context).textTheme.bodySmall!
+                                    .copyWith(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
+                                    ),
+                              ),
                       ),
                     ),
                     const SizedBox(height: 20.0),
@@ -379,22 +387,16 @@ class _SignupPageState extends State<SignupPage> {
                           children: [
                             TextSpan(
                               text: "Already have an account? ",
-                              style: Theme
-                                  .of(context)
-                                  .textTheme
-                                  .bodySmall!
+                              style: Theme.of(context).textTheme.bodySmall!
                                   .copyWith(color: Colors.black54),
                             ),
                             TextSpan(
                               text: "Sign in",
-                              style: Theme
-                                  .of(context)
-                                  .textTheme
-                                  .bodySmall
+                              style: Theme.of(context).textTheme.bodySmall
                                   ?.copyWith(
-                                color: const Color(0xffff650e),
-                                fontWeight: FontWeight.bold,
-                              ),
+                                    color: const Color(0xffff650e),
+                                    fontWeight: FontWeight.bold,
+                                  ),
                             ),
                           ],
                         ),
@@ -403,7 +405,7 @@ class _SignupPageState extends State<SignupPage> {
                     const SizedBox(height: 50.0),
                   ],
                 ),
-              )
+              ),
             ],
           ),
         ),

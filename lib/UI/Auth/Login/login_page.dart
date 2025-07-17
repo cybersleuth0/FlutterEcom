@@ -234,8 +234,8 @@ class _LoginPageState extends State<LoginPage> {
                           setState(() {
                             isLoading = false;
                           });
-                          // _passwordCtrl.clear();
-                          // _emailCtrl.clear();
+                          _passwordCtrl.clear();
+                          _emailCtrl.clear();
                         }
                       },
                       child: ElevatedButton(

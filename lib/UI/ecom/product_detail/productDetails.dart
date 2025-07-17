@@ -301,48 +301,104 @@ class _ProductDetailsState extends State<ProductDetails> {
               //add to cart button
               BlocListener<CartBloc, CartState>(
                 listener: (context, state) {
-                  ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                  SnackBar snackBar;
                   if (state is CartLoading_State) {
-                    snackBar = SnackBar(
-                      content: Row(
-                        children: [
-                          const CircularProgressIndicator(
-                            valueColor: AlwaysStoppedAnimation<Color>(
-                              Colors.white,
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Row(
+                          children: [
+                            SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(
+                                valueColor: AlwaysStoppedAnimation<Color>(
+                                  Colors.white,
+                                ),
+                                strokeWidth: 2.0,
+                              ),
                             ),
-                          ),
-                          const SizedBox(width: 16),
-                          Text(
-                            "Adding to cart...",
-                            style: GoogleFonts.lato(color: Colors.white),
-                          ),
-                        ],
+                            SizedBox(width: 10),
+                            Expanded(
+                              child: Text(
+                                "Adding to cart...",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        elevation: 6.0,
+                        backgroundColor: Colors.green,
+                        behavior: SnackBarBehavior.floating,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        margin: EdgeInsets.all(10),
                       ),
-                      backgroundColor: Colors.blueAccent,
-                      duration: const Duration(seconds: 5), // Keep it visible
                     );
                   } else if (state is CartSuccess_State) {
                     Navigator.pop(context);
-                    snackBar = SnackBar(
-                      content: Text(
-                        "Added to cart successfully!",
-                        style: GoogleFonts.lato(color: Colors.white),
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Row(
+                          children: [
+                            Icon(
+                              Icons.check_circle_outline,
+                              color: Colors.white,
+                            ),
+                            SizedBox(width: 10),
+                            Expanded(
+                              child: Text(
+                                "Item Added to Cart",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        elevation: 6.0,
+                        backgroundColor: Colors.green,
+                        behavior: SnackBarBehavior.floating,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        margin: EdgeInsets.all(10),
                       ),
-                      backgroundColor: Colors.green,
                     );
-                  } else if (state is CartError_State) {
-                    snackBar = SnackBar(
-                      content: Text(
-                        "Error: ${state.errorMsg}",
-                        style: GoogleFonts.lato(color: Colors.white),
-                      ),
-                      backgroundColor: Colors.redAccent,
-                    );
-                  } else {
-                    return; // Do nothing for other states
                   }
-                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  if (state is CartError_State) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Row(
+                          children: [
+                            Icon(Icons.error_outline, color: Colors.white),
+                            SizedBox(width: 10),
+                            Expanded(
+                              child: Text(
+                                state.errorMsg,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        elevation: 6.0,
+                        backgroundColor: Colors.redAccent,
+                        behavior: SnackBarBehavior.floating,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                    );
+                  }
                 },
                 child: Align(
                   alignment: Alignment.bottomCenter,

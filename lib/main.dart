@@ -44,7 +44,7 @@ void main() {
             bodySmall: TextStyle(fontSize: 16),
           ),
         ),
-        initialRoute: AppRoutes.ROUTE_LOGINPAGE,
+        initialRoute: AppRoutes.ROUTE_SPLASHSCREEN,
         routes: AppRoutes.getRoutes(),
         debugShowCheckedModeBanner: false,
       ),
