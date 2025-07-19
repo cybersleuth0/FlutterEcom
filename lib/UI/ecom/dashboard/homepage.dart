@@ -56,7 +56,7 @@ class _HomepageState extends State<Homepage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xffe3e3e3),
+      backgroundColor: Color(0xffF5F5F5),
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(kToolbarHeight),
         child: AppBar(
@@ -76,12 +76,7 @@ class _HomepageState extends State<Homepage> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                InkWell(
-                  onTap: () {
-                    context.read<ProductBloc>().add(GetAllProductsEvent());
-                  },
-                  child: Icon(CupertinoIcons.bell),
-                ),
+                Icon(CupertinoIcons.bell),
               ],
             ),
           ),
@@ -94,13 +89,16 @@ class _HomepageState extends State<Homepage> {
           child: BlocBuilder<ProductBloc, ProductState>(
             builder: (context, state) {
               if (state is ProductLoadingState) {
-                return Center(
-                  child: CircularProgressIndicator(
-                    valueColor: AlwaysStoppedAnimation<Color>(
-                      Color(0xffff650e),
+                return SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.7,
+                  child: Center(
+                    child: CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                        Color(0xffff650e),
+                      ),
+                      strokeWidth: 3,
+                      backgroundColor: Colors.white,
                     ),
-                    strokeWidth: 3,
-                    backgroundColor: Colors.white,
                   ),
                 );
               }
@@ -178,6 +176,18 @@ class _HomepageState extends State<Homepage> {
                                       child: Image.network(
                                         eachImg,
                                         fit: BoxFit.fill,
+                                        loadingBuilder:
+                                            (context, child, loadingProgress) {
+                                              if (loadingProgress == null) {
+                                                return child;
+                                              }
+                                              return Center(
+                                                child:
+                                                    CircularProgressIndicator(
+                                                      color: Colors.deepOrange,
+                                                    ),
+                                              );
+                                            },
                                       ),
                                     );
                                   }).toList(),
@@ -192,8 +202,7 @@ class _HomepageState extends State<Homepage> {
                                     enlargeCenterPage: true,
                                     viewportFraction: 1.0,
                                     autoPlayCurve: Curves.fastOutSlowIn,
-                                    enlargeStrategy: CenterPageEnlargeStrategy
-                                        .height, // Optional: for a different enlarge effect
+                                    enlargeStrategy: CenterPageEnlargeStrategy.height,
                                   ),
                                 ),
                               ),
@@ -427,8 +436,41 @@ class _HomepageState extends State<Homepage> {
                 );
               }
               if (state is ProductFailureState) {
-                return Center(
-                  child: Text(state.errorMsg, style: GoogleFonts.lato()),
+                return SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.7,
+                  child: Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.error_outline,
+                            color: Colors.red,
+                            size: 60,
+                          ),
+                          SizedBox(height: 20),
+                          Text(
+                            'Oops! Something went wrong.',
+                            style: GoogleFonts.lato(
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                          SizedBox(height: 10),
+                          Text(
+                            "${state.errorMsg}\nPlease check your internet connection and try again.",
+                            style: GoogleFonts.lato(
+                              fontSize: 16,
+                              color: Colors.grey[800],
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                 );
               }
               return Container();
@@ -478,7 +520,9 @@ class _HomepageState extends State<Homepage> {
                 IconButton(
                   icon: const Icon(CupertinoIcons.person),
                   color: Colors.grey,
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushNamed(context, AppRoutes.ROUTE_PROFILE);
+                  },
                 ),
               ],
             ),

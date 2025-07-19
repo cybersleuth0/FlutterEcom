@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_ecom/UI/ecom/Profile/profile.dart';
 
 import '../../UI/Auth/Login/login_page.dart';
 import '../../UI/Auth/Signup/Signup_page.dart';
@@ -14,6 +15,7 @@ class AppRoutes {
   static const String ROUTE_LOGINPAGE = "/loginpage";
   static const String ROUTE_SIGNUP = "/signup";
   static const String ROUTE_SPLASHSCREEN = "/splashscreen";
+  static const String ROUTE_PROFILE = "/profile";
 
   static Map<String, WidgetBuilder> getRoutes() => {
     ROUTE_HOMEPAGE: (context) => Homepage(),
@@ -22,5 +24,6 @@ class AppRoutes {
     ROUTE_LOGINPAGE: (context) => LoginPage(),
     ROUTE_SIGNUP: (context) => SignupPage(),
     ROUTE_SPLASHSCREEN: (context) => SplashScreenPage(),
+    ROUTE_PROFILE: (context) => ProfilePage(),
   };
 }

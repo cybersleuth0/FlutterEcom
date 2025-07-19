@@ -34,7 +34,7 @@ class _ProductDetailsState extends State<ProductDetails> {
     final detailedModel =
         ModalRoute.of(context)!.settings.arguments as ProductModel;
     return Scaffold(
-      backgroundColor: Color(0xffe3e3e3),
+      backgroundColor: Color(0xffF5F5F5),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         automaticallyImplyLeading: false,

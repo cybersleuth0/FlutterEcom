@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_ecom/UI/Auth/Login/Bloc/login_Bloc.dart';
+import 'package:flutter_ecom/UI/ecom/Profile/Bloc/profile_Bloc.dart';
 import 'package:flutter_ecom/UI/ecom/dashboard/Bloc/product_bloc.dart';
 import 'package:flutter_ecom/data/remote/helper/api_helper.dart';
 import 'package:flutter_ecom/data/remote/repositories/user_repo.dart';
@@ -31,6 +32,7 @@ void main() {
           create: (context) =>
               CartBloc(cartRepo: CartRepo(apiHelper: ApiHelper())),
         ),
+        BlocProvider(create: (context) => ProfileBloc(apiHelper: ApiHelper())),
       ],
       child: MaterialApp(
         themeMode: ThemeMode.system,
