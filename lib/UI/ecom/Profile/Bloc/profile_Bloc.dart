@@ -12,7 +12,6 @@ class ProfileBloc extends Bloc<ProfileEvents, ProfileStates> {
       emit(ProfileLoadingState());
       try {
         var res = await apiHelper.postApi(url: AppUrls.fetchUserProfile);
-        print(res["status"]);
         if (res["status"]) {
           emit(ProfileSuccessState(userData: res["data"]));
         } else {

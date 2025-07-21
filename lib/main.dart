@@ -33,6 +33,10 @@ void main() {
               CartBloc(cartRepo: CartRepo(apiHelper: ApiHelper())),
         ),
         BlocProvider(create: (context) => ProfileBloc(apiHelper: ApiHelper())),
+        BlocProvider(
+          create: (context) =>
+              CartBloc(cartRepo: CartRepo(apiHelper: ApiHelper())),
+        ),
       ],
       child: MaterialApp(
         themeMode: ThemeMode.system,

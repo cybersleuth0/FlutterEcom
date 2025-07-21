@@ -1,5 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_ecom/UI/ecom/product_detail/Bloc/cart_Bloc.dart';
+import 'package:flutter_ecom/UI/ecom/product_detail/Bloc/cart_State.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+import 'Bloc/cart_Event.dart';
 
 class Cartpage extends StatefulWidget {
   const Cartpage({super.key});
@@ -9,7 +15,11 @@ class Cartpage extends StatefulWidget {
 }
 
 class _CartpageState extends State<Cartpage> {
-  int productQty = 1;
+  @override
+  void initState() {
+    super.initState();
+    context.read<CartBloc>().add(FetchCartEvent());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,271 +42,324 @@ class _CartpageState extends State<Cartpage> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            Card(
-              elevation: 4,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15.0),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: Row(
-                  children: [
-                    Expanded(
-                      flex: 3,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(10.0),
-                        child: Image.network(
-                          "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c2hvZXN8ZW58MHx8MHx8fDA%3D",
-                          fit: BoxFit.cover,
-                        ),
-                      ),
+        child: BlocBuilder<CartBloc, CartState>(
+          builder: (context, state) {
+            if (state is CartLoading_State) {
+              return SizedBox(
+                height: MediaQuery.of(context).size.height * 0.7,
+                child: Center(
+                  child: CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                      Color(0xffff650e),
                     ),
-                    SizedBox(width: 15),
-                    Expanded(
-                      flex: 7,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Flexible(
-                                child: Text(
-                                  "Nike Shoes",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20,
-                                    color: Colors.black87,
-                                  ),
-                                ),
-                              ),
-                              InkWell(
-                                onTap: () {},
-                                child: Icon(
-                                  Icons.delete_outline,
-                                  color: Colors.redAccent,
-                                  size: 26,
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 5),
-                          Text(
-                            "Men's Shoes",
-                            style: TextStyle(
-                              color: Colors.grey[600],
-                              fontSize: 16,
-                            ),
-                          ),
-                          SizedBox(height: 10),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "\$200.00",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 19,
-                                  color: Colors.green,
-                                ),
-                              ),
-                              Row(
-                                children: [
-                                  InkWell(
-                                    onTap: () {
-                                      setState(() {
-                                        if (productQty > 1) {
-                                          productQty--;
-                                        }
-                                      });
-                                    },
-                                    borderRadius: BorderRadius.circular(8),
-                                    child: Container(
-                                      padding: EdgeInsets.all(4),
-                                      decoration: BoxDecoration(
-                                        color: Colors.grey[200],
-                                        borderRadius: BorderRadius.circular(8),
-                                        border: Border.all(
-                                          color: Colors.grey[300]!,
-                                          width: 1,
-                                        ),
-                                      ),
-                                      child: Icon(
-                                        Icons.minimize,
-                                        size: 20,
-                                        color: Colors.black54,
-                                      ),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 12.0,
-                                    ),
-                                    child: Text(
-                                      "$productQty",
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ), // Quantity
-                                  ),
-                                  InkWell(
-                                    onTap: () {
-                                      setState(() {
-                                        productQty++;
-                                      });
-                                    },
-                                    borderRadius: BorderRadius.circular(8),
-                                    child: Container(
-                                      padding: EdgeInsets.all(4),
-                                      decoration: BoxDecoration(
-                                        color: Colors.grey[200],
-                                        borderRadius: BorderRadius.circular(8),
-                                        border: Border.all(
-                                          color: Colors.grey[300]!,
-                                          width: 1,
-                                        ),
-                                      ),
-                                      child: Icon(
-                                        Icons.add,
-                                        size: 20,
-                                        color: Colors.black54,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+                    strokeWidth: 3,
+                    backgroundColor: Colors.white,
+                  ),
                 ),
-              ),
-            ),
-          ],
-        ),
-      ),
-      bottomSheet: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Container(
-          padding: EdgeInsets.all(16.0),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.3),
-                spreadRadius: 2,
-                blurRadius: 5,
-                offset: Offset(0, -3),
-              ),
-            ],
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(20.0),
-              topRight: Radius.circular(20.0),
-            ),
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Row(
+              );
+            }
+            if (state is CartViewSuccess_State) {
+              return Column(
                 children: [
                   Expanded(
-                    child: TextField(
-                      decoration: InputDecoration(
-                        hintText: "Enter Coupon Code",
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                          borderSide: BorderSide(color: Colors.grey[300]!),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                          borderSide: BorderSide(color: Colors.grey[300]!),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                          borderSide: BorderSide(
-                            color: Theme.of(context).primaryColor,
+                    child: ListView.builder(
+                      padding: EdgeInsets.only(bottom: 50),
+                      itemCount: state.cartList.length,
+                      itemBuilder: (context, index) {
+                        return Card(
+                          elevation: 4,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15.0),
                           ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  flex: 3,
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    child: Image.network(
+                                      state.cartList[index].image!,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(width: 15),
+                                Expanded(
+                                  flex: 7,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Flexible(
+                                            child: Text(
+                                              state.cartList[index].name!,
+                                              style: GoogleFonts.lato(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 20,
+                                                color: Colors.black87,
+                                              ),
+                                            ),
+                                          ),
+                                          InkWell(
+                                            onTap: () {},
+                                            child: Icon(
+                                              Icons.delete_outline,
+                                              color: Colors.redAccent,
+                                              size: 26,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(height: 15),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            "\u20B9${state.cartList[index].price!}",
+                                            style: GoogleFonts.lato(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 19,
+                                              color: Colors.green,
+                                            ),
+                                          ),
+                                          Row(
+                                            children: [
+                                              InkWell(
+                                                onTap: () {
+                                                  // setState(() {
+                                                  //   if (state.cartList[index].quantity! > 1) {
+                                                  //     state.cartList[index].quantity!--;
+                                                  //   }
+                                                  // });
+                                                },
+                                                borderRadius:
+                                                    BorderRadius.circular(8),
+                                                child: Container(
+                                                  padding: EdgeInsets.all(4),
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.grey[200],
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                          8,
+                                                        ),
+                                                    border: Border.all(
+                                                      color: Colors.grey[300]!,
+                                                      width: 1,
+                                                    ),
+                                                  ),
+                                                  child: Icon(
+                                                    Icons.minimize,
+                                                    size: 20,
+                                                    color: Colors.black54,
+                                                  ),
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                      horizontal: 12.0,
+                                                    ),
+                                                child: Text(
+                                                  "${state.cartList[index].quantity!}",
+                                                  style: GoogleFonts.lato(
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                                ),
+                                              ),
+                                              InkWell(
+                                                onTap: () {
+                                                  // setState(() {
+                                                  //   state.cartList[index].quantity!++;
+                                                  // });
+                                                },
+                                                borderRadius:
+                                                    BorderRadius.circular(8),
+                                                child: Container(
+                                                  padding: EdgeInsets.all(4),
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.grey[200],
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                          8,
+                                                        ),
+                                                    border: Border.all(
+                                                      color: Colors.grey[300]!,
+                                                      width: 1,
+                                                    ),
+                                                  ),
+                                                  child: Icon(
+                                                    Icons.add,
+                                                    size: 20,
+                                                    color: Colors.black54,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          spreadRadius: 1,
+                          blurRadius: 5,
+                          offset: Offset(0, -1),
                         ),
-                        contentPadding: EdgeInsets.symmetric(
-                          vertical: 10.0,
-                          horizontal: 15.0,
+                      ],
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(24.0),
+                        topRight: Radius.circular(24.0),
+                      ),
+                    ),
+                    padding: EdgeInsets.all(12.0),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Row(
+                          children: [
+                            Expanded(
+                              child: TextField(
+                                decoration: InputDecoration(
+                                  filled: true,
+                                  fillColor: Colors.grey[100],
+                                  hintText: "Enter Coupon Code",
+                                  hintStyle: TextStyle(
+                                    color: Colors.grey[500],
+                                    fontSize: 15,
+                                  ),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(12.0),
+                                    borderSide: BorderSide.none,
+                                  ),
+                                  contentPadding: EdgeInsets.symmetric(
+                                    vertical: 14.0,
+                                    horizontal: 20.0,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(width: 12),
+                            ElevatedButton(
+                              onPressed: () {},
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Color(0xffff650e),
+                                foregroundColor: Colors.white,
+                                elevation: 4,
+                                padding: EdgeInsets.symmetric(
+                                  vertical: 14.0,
+                                  horizontal: 26.0,
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12.0),
+                                ),
+                              ),
+                              child: Text(
+                                "Apply",
+                                style: GoogleFonts.lato(
+                                  fontSize: 16,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(width: 10),
-                  ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets.symmetric(
-                        vertical: 12.0,
-                        horizontal: 20.0,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                    ),
-                    child: Text(
-                      "Apply",
-                      style: TextStyle(fontSize: 16, color: Color(0xffff650e)),
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 15),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Subtotal:",
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.black87,
-                    ),
-                  ),
-                  Text(
-                    "\$${(200.00 * productQty).toStringAsFixed(2)}",
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black87,
+                        SizedBox(height: 20),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Subtotal:",
+                              style: GoogleFonts.lato(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.black87,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 12),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Total:",
+                              style: GoogleFonts.lato(
+                                fontSize: 26,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xffff650e),
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 12),
+                      ],
                     ),
                   ),
                 ],
-              ),
-              SizedBox(height: 10),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Total:",
-                    style: TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.green,
+              );
+            }
+            if (state is CartError_State) {
+              return SizedBox(
+                height: MediaQuery.of(context).size.height * 0.7,
+                child: Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.error_outline, color: Colors.red, size: 60),
+                        SizedBox(height: 20),
+                        Text(
+                          'Oops! Something went wrong.',
+                          style: GoogleFonts.lato(
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        SizedBox(height: 10),
+                        Text(
+                          "${state.errorMsg}\nPlease check your internet connection and try again.",
+                          style: GoogleFonts.lato(
+                            fontSize: 16,
+                            color: Colors.grey[800],
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
                     ),
                   ),
-                  Text(
-                    "\$${(200.00 * productQty).toStringAsFixed(2)}",
-                    style: TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.green,
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 10),
-            ],
-          ),
+                ),
+              );
+            }
+            return Container();
+          },
         ),
       ),
     );

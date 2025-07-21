@@ -22,4 +22,13 @@ class CartRepo {
       rethrow;
     }
   }
+
+  Future<dynamic> fetchCart() async {
+    try {
+      var res = await apiHelper.getApi(url: AppUrls.fetchCartUrl);
+      return res;
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

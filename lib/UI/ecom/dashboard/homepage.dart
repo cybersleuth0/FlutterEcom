@@ -76,7 +76,12 @@ class _HomepageState extends State<Homepage> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                Icon(CupertinoIcons.bell),
+                InkWell(
+                  onTap: () {
+                    Navigator.pushNamed(context, AppRoutes.ROUTE_CART_PAGE);
+                  },
+                  child: Icon(CupertinoIcons.shopping_cart),
+                ),
               ],
             ),
           ),
@@ -202,7 +207,8 @@ class _HomepageState extends State<Homepage> {
                                     enlargeCenterPage: true,
                                     viewportFraction: 1.0,
                                     autoPlayCurve: Curves.fastOutSlowIn,
-                                    enlargeStrategy: CenterPageEnlargeStrategy.height,
+                                    enlargeStrategy:
+                                        CenterPageEnlargeStrategy.height,
                                   ),
                                 ),
                               ),
