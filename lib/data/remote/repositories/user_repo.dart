@@ -9,7 +9,6 @@ class UserRepo {
   Future<dynamic> registerUser({
     required Map<String, dynamic> bodyParams,
   }) async {
-
     try {
       dynamic res = await apiHelper.postApi(
         url: AppUrls.registerUrl,
@@ -20,15 +19,14 @@ class UserRepo {
     } catch (e) {
       rethrow;
     }
-
   }
 
   Future<dynamic> loginUser({required Map<String, dynamic> bodyParams}) async {
     try {
       dynamic res = await apiHelper.postApi(
-          url: AppUrls.loginUrl,
-          isAuth: true,
-          params: bodyParams
+        url: AppUrls.loginUrl,
+        isAuth: true,
+        params: bodyParams,
       );
       return res;
     } catch (e) {

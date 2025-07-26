@@ -11,7 +11,6 @@ class CartRepo {
     required int quantity,
   }) async {
     var bodyparms = {"product_id": productId, "quantity": quantity};
-
     try {
       var res = await apiHelper.postApi(
         url: AppUrls.addToCartUrl,
@@ -26,6 +25,19 @@ class CartRepo {
   Future<dynamic> fetchCart() async {
     try {
       var res = await apiHelper.getApi(url: AppUrls.fetchCartUrl);
+      return res;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<dynamic> decrementProductCount(int productId, int quantity) async {
+    final bodyparms = {"product_id": productId, "quantity": quantity};
+    try {
+      var res = await apiHelper.postApi(
+        url: AppUrls.decrementProductCount,
+        params: bodyparms,
+      );
       return res;
     } catch (e) {
       rethrow;

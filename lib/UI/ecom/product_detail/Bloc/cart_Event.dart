@@ -8,3 +8,13 @@ class AddtoCartEvent extends CartEvent {
 }
 
 class FetchCartEvent extends CartEvent {}
+
+class DecrementProductCountEvent extends CartEvent {
+  final product_id;
+  final quantity;
+
+  DecrementProductCountEvent({
+    required this.product_id,
+    required this.quantity,
+  });
+}

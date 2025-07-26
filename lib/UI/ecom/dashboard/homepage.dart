@@ -34,12 +34,10 @@ class _HomepageState extends State<Homepage> {
     context.read<ProductBloc>().add(GetAllProductsEvent());
     _scrollController = ScrollController();
     _scrollController.addListener(() {
-      // If the user scrolls down (reverse direction)
       if (_scrollController.position.userScrollDirection ==
           ScrollDirection.reverse) {
         if (_isVisible) setState(() => _isVisible = false);
       }
-      // If the user scrolls up (forward direction)
       if (_scrollController.position.userScrollDirection ==
           ScrollDirection.forward) {
         if (!_isVisible) setState(() => _isVisible = true);
@@ -55,8 +53,12 @@ class _HomepageState extends State<Homepage> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final textTheme = theme.textTheme;
+
     return Scaffold(
-      backgroundColor: Color(0xffF5F5F5),
+      backgroundColor: colorScheme.background,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(kToolbarHeight),
         child: AppBar(
@@ -68,11 +70,13 @@ class _HomepageState extends State<Homepage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Icon(CupertinoIcons.square_grid_2x2),
+                Icon(
+                  CupertinoIcons.square_grid_2x2,
+                  color: colorScheme.onBackground,
+                ),
                 Text(
                   "Home",
-                  style: GoogleFonts.lato(
-                    color: Colors.black,
+                  style: textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -80,7 +84,10 @@ class _HomepageState extends State<Homepage> {
                   onTap: () {
                     Navigator.pushNamed(context, AppRoutes.ROUTE_CART_PAGE);
                   },
-                  child: Icon(CupertinoIcons.shopping_cart),
+                  child: Icon(
+                    CupertinoIcons.shopping_cart,
+                    color: colorScheme.onBackground,
+                  ),
                 ),
               ],
             ),
@@ -98,11 +105,8 @@ class _HomepageState extends State<Homepage> {
                   height: MediaQuery.of(context).size.height * 0.7,
                   child: Center(
                     child: CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation<Color>(
-                        Color(0xffff650e),
-                      ),
+                      color: colorScheme.primary,
                       strokeWidth: 3,
-                      backgroundColor: Colors.white,
                     ),
                   ),
                 );
@@ -111,20 +115,20 @@ class _HomepageState extends State<Homepage> {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    //Searchbar
+                    // Searchbar
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 8.0),
                       child: Container(
                         padding: const EdgeInsets.symmetric(horizontal: 16.0),
                         decoration: BoxDecoration(
-                          color: Colors.grey[200],
+                          color: colorScheme.surface.withOpacity(0.5),
                           borderRadius: BorderRadius.circular(30.0),
                         ),
                         child: Row(
                           children: [
                             Icon(
                               CupertinoIcons.search,
-                              color: Colors.grey[600],
+                              color: colorScheme.onSurface.withOpacity(0.6),
                             ),
                             const SizedBox(width: 10),
                             Expanded(
@@ -132,8 +136,8 @@ class _HomepageState extends State<Homepage> {
                                 decoration: InputDecoration(
                                   hintText: "Search...",
                                   border: InputBorder.none,
-                                  hintStyle: GoogleFonts.lato(
-                                    color: Colors.grey[600],
+                                  hintStyle: textTheme.bodyMedium?.copyWith(
+                                    color: colorScheme.onSurface.withOpacity(0.6),
                                   ),
                                 ),
                               ),
@@ -141,14 +145,14 @@ class _HomepageState extends State<Homepage> {
                             Container(
                               height: 20,
                               width: 1,
-                              color: Colors.grey[400],
+                              color: colorScheme.onSurface.withOpacity(0.4),
                               margin: const EdgeInsets.symmetric(
                                 horizontal: 8.0,
                               ),
                             ),
-                            const Icon(
+                            Icon(
                               CupertinoIcons.slider_horizontal_3,
-                              color: Colors.black,
+                              color: colorScheme.onSurface,
                             ),
                           ],
                         ),
@@ -163,7 +167,7 @@ class _HomepageState extends State<Homepage> {
                             borderRadius: BorderRadius.circular(20.0),
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.grey.withOpacity(0.3),
+                                color: colorScheme.onBackground.withOpacity(0.1),
                                 spreadRadius: 2,
                                 blurRadius: 8,
                                 offset: const Offset(0, 4),
@@ -183,16 +187,15 @@ class _HomepageState extends State<Homepage> {
                                         fit: BoxFit.fill,
                                         loadingBuilder:
                                             (context, child, loadingProgress) {
-                                              if (loadingProgress == null) {
-                                                return child;
-                                              }
-                                              return Center(
-                                                child:
-                                                    CircularProgressIndicator(
-                                                      color: Colors.deepOrange,
-                                                    ),
-                                              );
-                                            },
+                                          if (loadingProgress == null) {
+                                            return child;
+                                          }
+                                          return Center(
+                                            child: CircularProgressIndicator(
+                                              color: colorScheme.primary,
+                                            ),
+                                          );
+                                        },
                                       ),
                                     );
                                   }).toList(),
@@ -208,11 +211,10 @@ class _HomepageState extends State<Homepage> {
                                     viewportFraction: 1.0,
                                     autoPlayCurve: Curves.fastOutSlowIn,
                                     enlargeStrategy:
-                                        CenterPageEnlargeStrategy.height,
+                                    CenterPageEnlargeStrategy.height,
                                   ),
                                 ),
                               ),
-                              SizedBox(height: 10),
                               Positioned(
                                 bottom: -15,
                                 left: 0,
@@ -229,7 +231,7 @@ class _HomepageState extends State<Homepage> {
                                         vertical: 6.0,
                                       ),
                                       decoration: BoxDecoration(
-                                        color: Colors.black.withOpacity(0.5),
+                                        color: colorScheme.onBackground.withOpacity(0.5),
                                         borderRadius: BorderRadius.circular(
                                           20.0,
                                         ),
@@ -239,8 +241,8 @@ class _HomepageState extends State<Homepage> {
                                         height: 8,
                                         space: 8,
                                         cornerRadius: 10,
-                                        color: Colors.white.withOpacity(0.5),
-                                        activeColor: Colors.white,
+                                        color: colorScheme.surface.withOpacity(0.5),
+                                        activeColor: colorScheme.surface,
                                         count: bannerImages.length,
                                         index: _currentIndex,
                                       ),
@@ -260,8 +262,7 @@ class _HomepageState extends State<Homepage> {
                       children: [
                         Text(
                           "Special offer for you",
-                          style: GoogleFonts.lato(
-                            fontSize: 18,
+                          style: textTheme.titleLarge?.copyWith(
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -269,7 +270,9 @@ class _HomepageState extends State<Homepage> {
                           onPressed: () {},
                           child: Text(
                             "see all",
-                            style: GoogleFonts.lato(color: Colors.blue),
+                            style: textTheme.bodyMedium?.copyWith(
+                              color: colorScheme.primary,
+                            ),
                           ),
                         ),
                       ],
@@ -282,12 +285,8 @@ class _HomepageState extends State<Homepage> {
                       gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                         maxCrossAxisExtent: 200.0,
                         crossAxisSpacing: 10.0,
-                        // Sets the horizontal spacing between columns
                         mainAxisSpacing: 10.0,
-                        // Sets the vertical spacing between rows
-                        childAspectRatio:
-                            2 /
-                            3, // Sets the ratio of width to height for each child item in the grid.
+                        childAspectRatio: 2 / 3,
                       ),
                       itemCount: state.products.length,
                       itemBuilder: (context, index) {
@@ -302,11 +301,11 @@ class _HomepageState extends State<Homepage> {
                           child: Container(
                             padding: const EdgeInsets.all(8.0),
                             decoration: BoxDecoration(
-                              color: Colors.white,
+                              color: colorScheme.surface,
                               borderRadius: BorderRadius.circular(15.0),
                               boxShadow: [
                                 BoxShadow(
-                                  color: Colors.grey.withOpacity(0.3),
+                                  color: colorScheme.onBackground.withOpacity(0.1),
                                   spreadRadius: 1,
                                   blurRadius: 5,
                                   offset: Offset(0, 2),
@@ -318,13 +317,13 @@ class _HomepageState extends State<Homepage> {
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    //Product image
+                                    // Product image
                                     Expanded(
                                       child: ClipRRect(
                                         borderRadius:
-                                            const BorderRadius.vertical(
-                                              top: Radius.circular(15.0),
-                                            ),
+                                        const BorderRadius.vertical(
+                                          top: Radius.circular(15.0),
+                                        ),
                                         child: Center(
                                           child: Padding(
                                             padding: const EdgeInsets.all(8.0),
@@ -335,34 +334,32 @@ class _HomepageState extends State<Homepage> {
                                         ),
                                       ),
                                     ),
-                                    //product name
+                                    // Product name
                                     Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: Text(
                                         state.products[index].name!
                                             .toUpperCase(),
-                                        style: GoogleFonts.lato(
-                                          fontSize: 15.0,
-                                          color: Colors.black87,
+                                        style: textTheme.bodyLarge?.copyWith(
+                                          color: colorScheme.onSurface,
                                           letterSpacing: 0.5,
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
                                     ),
-                                    //product price
+                                    // Product price
                                     Padding(
                                       padding: const EdgeInsets.symmetric(
                                         horizontal: 8.0,
                                       ),
                                       child: Row(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                        MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(
                                             "\u{20B9} ${state.products[index].price!}",
-                                            style: GoogleFonts.lato(
-                                              color: Colors.black45,
-                                              fontSize: 16.0,
+                                            style: textTheme.bodyMedium?.copyWith(
+                                              color: colorScheme.onSurface.withOpacity(0.7),
                                               fontWeight: FontWeight.bold,
                                             ),
                                           ),
@@ -371,7 +368,7 @@ class _HomepageState extends State<Homepage> {
                                               Container(
                                                 width: 12,
                                                 height: 12,
-                                                decoration: const BoxDecoration(
+                                                decoration: BoxDecoration(
                                                   color: Colors.orange,
                                                   shape: BoxShape.circle,
                                                 ),
@@ -380,8 +377,8 @@ class _HomepageState extends State<Homepage> {
                                               Container(
                                                 width: 12,
                                                 height: 12,
-                                                decoration: const BoxDecoration(
-                                                  color: Colors.black,
+                                                decoration: BoxDecoration(
+                                                  color: colorScheme.onSurface,
                                                   shape: BoxShape.circle,
                                                 ),
                                               ),
@@ -389,7 +386,7 @@ class _HomepageState extends State<Homepage> {
                                               Container(
                                                 width: 12,
                                                 height: 12,
-                                                decoration: const BoxDecoration(
+                                                decoration: BoxDecoration(
                                                   color: Colors.red,
                                                   shape: BoxShape.circle,
                                                 ),
@@ -398,7 +395,7 @@ class _HomepageState extends State<Homepage> {
                                               Container(
                                                 width: 12,
                                                 height: 12,
-                                                decoration: const BoxDecoration(
+                                                decoration: BoxDecoration(
                                                   color: Colors.blue,
                                                   shape: BoxShape.circle,
                                                 ),
@@ -417,16 +414,16 @@ class _HomepageState extends State<Homepage> {
                                   child: Container(
                                     padding: const EdgeInsets.all(4.0),
                                     decoration: BoxDecoration(
-                                      color: Color(0xffff650e),
+                                      color: colorScheme.primary,
                                       shape: BoxShape.rectangle,
                                       borderRadius: BorderRadius.only(
                                         topRight: Radius.circular(16),
                                         bottomLeft: Radius.circular(8),
                                       ),
                                     ),
-                                    child: const Icon(
+                                    child: Icon(
                                       CupertinoIcons.heart,
-                                      color: Colors.white,
+                                      color: colorScheme.surface,
                                       size: 20,
                                     ),
                                   ),
@@ -458,8 +455,7 @@ class _HomepageState extends State<Homepage> {
                           SizedBox(height: 20),
                           Text(
                             'Oops! Something went wrong.',
-                            style: GoogleFonts.lato(
-                              fontSize: 22,
+                            style: textTheme.titleLarge?.copyWith(
                               fontWeight: FontWeight.bold,
                             ),
                             textAlign: TextAlign.center,
@@ -467,9 +463,8 @@ class _HomepageState extends State<Homepage> {
                           SizedBox(height: 10),
                           Text(
                             "${state.errorMsg}\nPlease check your internet connection and try again.",
-                            style: GoogleFonts.lato(
-                              fontSize: 16,
-                              color: Colors.grey[800],
+                            style: textTheme.bodyMedium?.copyWith(
+                              color: colorScheme.onSurface.withOpacity(0.7),
                             ),
                             textAlign: TextAlign.center,
                           ),
@@ -490,10 +485,13 @@ class _HomepageState extends State<Homepage> {
         duration: const Duration(milliseconds: 300),
         child: FloatingActionButton(
           onPressed: () {},
-          backgroundColor: Color(0xffff650e),
+          backgroundColor: colorScheme.primary,
           elevation: 4.0,
           shape: CircleBorder(),
-          child: const Icon(CupertinoIcons.home, color: Colors.white),
+          child: Icon(
+            CupertinoIcons.home,
+            color: colorScheme.onPrimary,
+          ),
         ),
       ),
       bottomNavigationBar: AnimatedContainer(
@@ -508,24 +506,24 @@ class _HomepageState extends State<Homepage> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 IconButton(
-                  icon: const Icon(CupertinoIcons.square_grid_2x2),
-                  color: Color(0xffff650e),
+                  icon: Icon(CupertinoIcons.square_grid_2x2),
+                  color: colorScheme.primary,
                   onPressed: () {},
                 ),
                 IconButton(
-                  icon: const Icon(CupertinoIcons.heart),
-                  color: Colors.grey,
+                  icon: Icon(CupertinoIcons.heart),
+                  color: colorScheme.onSurface.withOpacity(0.6),
                   onPressed: () {},
                 ),
                 const SizedBox(width: 40),
                 IconButton(
-                  icon: const Icon(CupertinoIcons.chat_bubble_text),
-                  color: Colors.grey,
+                  icon: Icon(CupertinoIcons.chat_bubble_text),
+                  color: colorScheme.onSurface.withOpacity(0.6),
                   onPressed: () {},
                 ),
                 IconButton(
-                  icon: const Icon(CupertinoIcons.person),
-                  color: Colors.grey,
+                  icon: Icon(CupertinoIcons.person),
+                  color: colorScheme.onSurface.withOpacity(0.6),
                   onPressed: () {
                     Navigator.pushNamed(context, AppRoutes.ROUTE_PROFILE);
                   },

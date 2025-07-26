@@ -55,8 +55,11 @@ class SplashScreenState extends State<SplashScreenPage>
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final textTheme = theme.textTheme;
     return Scaffold(
-      backgroundColor: Color(0xffe3e3e3),
+      backgroundColor: colorScheme.background,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -75,12 +78,10 @@ class SplashScreenState extends State<SplashScreenPage>
             const SizedBox(height: 30),
             FadeTransition(
               opacity: _animation,
-              child: const Text(
+              child: Text(
                 'ShopSphere',
-                style: TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black54,
+                style: textTheme.displayMedium?.copyWith(
+                  color: colorScheme.onBackground,
                 ),
               ),
             ),

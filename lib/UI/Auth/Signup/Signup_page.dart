@@ -39,10 +39,14 @@ class _SignupPageState extends State<SignupPage> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final textTheme = theme.textTheme;
+
     return Form(
       key: _formKey,
       child: Scaffold(
-        backgroundColor: const Color(0xffe3e3e3),
+        backgroundColor: colorScheme.background,
         body: Padding(
           padding: const EdgeInsets.all(24.0),
           child: CustomScrollView(
@@ -59,17 +63,14 @@ class _SignupPageState extends State<SignupPage> {
                       height: 250,
                       width: 250,
                     ),
-                    const Text(
-                      'Sign Up',
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                    Text('Sign Up', style: textTheme.displaySmall),
                     const SizedBox(height: 8.0),
-                    const Text(
+                    Text(
                       'Create an account to start shopping!',
-                      style: TextStyle(fontSize: 16, color: Colors.black54),
+                      // style: TextStyle(fontSize: 16, color: Colors.black54),
+                      style: textTheme.bodyLarge?.copyWith(
+                        color: colorScheme.onSurface,
+                      ),
                     ),
                     const SizedBox(height: 26.0),
                     //Name
@@ -87,10 +88,10 @@ class _SignupPageState extends State<SignupPage> {
                           labelText: 'Name',
                           prefixIcon: Icon(
                             Icons.person_outline,
-                            color: Color(0xffff650e),
+                            color: colorScheme.primary,
                           ),
                           border: OutlineInputBorder(
-                            borderSide: BorderSide(color: Color(0xffff650e)),
+                            borderSide: BorderSide(color: colorScheme.primary),
                             borderRadius: BorderRadius.circular(12.0),
                           ),
                         ),
@@ -116,10 +117,10 @@ class _SignupPageState extends State<SignupPage> {
                           labelText: 'Mobile Number',
                           prefixIcon: Icon(
                             Icons.phone_outlined,
-                            color: Color(0xffff650e),
+                            color: colorScheme.primary,
                           ),
                           border: OutlineInputBorder(
-                            borderSide: BorderSide(color: Color(0xffff650e)),
+                            borderSide: BorderSide(color: colorScheme.primary),
                             borderRadius: BorderRadius.circular(12.0),
                           ),
                         ),
@@ -146,10 +147,10 @@ class _SignupPageState extends State<SignupPage> {
                           labelText: 'Email',
                           prefixIcon: Icon(
                             Icons.email_outlined,
-                            color: Color(0xffff650e),
+                            color: colorScheme.primary,
                           ),
                           border: OutlineInputBorder(
-                            borderSide: BorderSide(color: Color(0xffff650e)),
+                            borderSide: BorderSide(color: colorScheme.primary),
                             borderRadius: BorderRadius.circular(12.0),
                           ),
                         ),
@@ -185,7 +186,7 @@ class _SignupPageState extends State<SignupPage> {
                           labelText: 'Password',
                           prefixIcon: Icon(
                             Icons.lock_outline,
-                            color: Color(0xffff650e),
+                            color: colorScheme.primary,
                           ),
                           suffixIcon: InkWell(
                             onTap: () {
@@ -198,7 +199,7 @@ class _SignupPageState extends State<SignupPage> {
                                 : const Icon(Icons.visibility_off_outlined),
                           ),
                           border: OutlineInputBorder(
-                            borderSide: BorderSide(color: Color(0xffff650e)),
+                            borderSide: BorderSide(color: colorScheme.primary),
                             borderRadius: BorderRadius.circular(12.0),
                           ),
                         ),
@@ -225,10 +226,10 @@ class _SignupPageState extends State<SignupPage> {
                           labelText: 'Repeat Password',
                           prefixIcon: Icon(
                             Icons.lock_outline,
-                            color: Color(0xffff650e),
+                            color: colorScheme.primary,
                           ),
                           border: OutlineInputBorder(
-                            borderSide: BorderSide(color: Color(0xffff650e)),
+                            borderSide: BorderSide(color: colorScheme.primary),
 
                             borderRadius: BorderRadius.circular(12.0),
                           ),
@@ -300,14 +301,14 @@ class _SignupPageState extends State<SignupPage> {
                                 children: [
                                   Icon(
                                     Icons.error_outline,
-                                    color: Colors.white,
+                                    color: colorScheme.surface,
                                   ),
                                   SizedBox(width: 8),
                                   Expanded(
                                     child: Text(
                                       state.errorMsg,
                                       style: TextStyle(
-                                        color: Colors.white,
+                                        color: colorScheme.surface,
                                         fontWeight: FontWeight.bold,
                                       ),
                                       overflow: TextOverflow.ellipsis,
@@ -348,7 +349,7 @@ class _SignupPageState extends State<SignupPage> {
                           }
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xffff650e),
+                          backgroundColor: colorScheme.primary,
                           padding: const EdgeInsets.symmetric(
                             horizontal: 40,
                             vertical: 15,
@@ -364,7 +365,7 @@ class _SignupPageState extends State<SignupPage> {
                                   minWidth: 25,
                                 ),
                                 padding: EdgeInsets.zero,
-                                color: Colors.white,
+                                color: colorScheme.primary,
                               )
                             : Text(
                                 'Sign Up',

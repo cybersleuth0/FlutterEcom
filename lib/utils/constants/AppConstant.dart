@@ -5,7 +5,7 @@ import '../../UI/Auth/Login/login_page.dart';
 import '../../UI/Auth/Signup/Signup_page.dart';
 import '../../UI/SplashScreen.dart';
 import '../../UI/ecom/dashboard/homepage.dart';
-import '../../UI/ecom/product_detail/cartPage.dart';
+import '../../UI/ecom/orderPlace/cartPage.dart';
 import '../../UI/ecom/product_detail/productDetails.dart';
 
 class AppRoutes {

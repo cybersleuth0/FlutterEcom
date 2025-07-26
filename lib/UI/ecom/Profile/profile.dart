@@ -14,18 +14,6 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  final Map<String, dynamic> userData = {
-    "id": "7",
-    "name": "Mukesh Kumar",
-    "email": "mukesh1@gmail.com",
-    "mobile_number": "7073689209",
-    "password": "123456",
-    "image": "",
-    "status": "1",
-    "created_at": "2024-06-06 16:07:02",
-    "updated_at": "2024-06-06 16:07:02",
-  };
-
   @override
   void initState() {
     super.initState();
@@ -34,8 +22,11 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final textTheme = theme.textTheme;
     return Scaffold(
-      backgroundColor: Color(0xffF5F5F5),
+      backgroundColor: colorScheme.background,
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: Colors.transparent,
@@ -44,17 +35,15 @@ class _ProfilePageState extends State<ProfilePage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             IconButton(
-              icon: Icon(CupertinoIcons.back, color: Colors.black),
+              icon: Icon(CupertinoIcons.back, color: colorScheme.onBackground),
               onPressed: () {
                 Navigator.pop(context);
               },
             ),
             Text(
               "Profile",
-              style: GoogleFonts.lato(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-                fontSize: 24,
+              style: textTheme.displaySmall?.copyWith(
+                color: colorScheme.onSurface,
               ),
             ),
           ],
@@ -70,7 +59,9 @@ class _ProfilePageState extends State<ProfilePage> {
                     MediaQuery.of(context).size.height -
                     (Scaffold.of(context).appBarMaxHeight ?? 0) -
                     MediaQuery.of(context).padding.top,
-                child: Center(child: CircularProgressIndicator()),
+                child: Center(
+                  child: CircularProgressIndicator(color: colorScheme.primary),
+                ),
               );
             }
             if (state is ProfileSuccessState) {
@@ -182,10 +173,8 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
                           child: Text(
                             'Logout',
-                            style: GoogleFonts.lato(
-                              color: Colors.white,
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
+                            style: textTheme.headlineSmall?.copyWith(
+                              color: colorScheme.surface,
                             ),
                           ),
                         ),
@@ -208,10 +197,10 @@ class _ProfilePageState extends State<ProfilePage> {
                         SizedBox(height: 20),
                         Text(
                           'Oops! Something went wrong.',
-                          style: GoogleFonts.lato(
-                            fontSize: 22,
-                            fontWeight: FontWeight.bold,
+                          style: textTheme.headlineMedium?.copyWith(
+                            color: colorScheme.onBackground,
                           ),
+
                           textAlign: TextAlign.center,
                         ),
                         SizedBox(height: 10),

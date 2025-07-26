@@ -16,11 +16,13 @@ class CartBloc extends Bloc<CartEvent, CartState> {
           quantity: event.quantity,
         );
         if (res["status"] == "true" || res["status"]) {
-          emit(CartSuccess_State());
+          emit(CartSuccess_State(cartList: []));
         } else {
-          emit(CartError_State(errorMsg: 'print $res["message"]'));
+          print(res["message"]);
+          emit(CartError_State(errorMsg: '${res["message"]}'));
         }
       } catch (e) {
+        print(e.toString());
         emit(CartError_State(errorMsg: e.toString()));
       }
     });
@@ -34,10 +36,31 @@ class CartBloc extends Bloc<CartEvent, CartState> {
           for (var item in res["data"]) {
             mCart.add(CartModel.fromJson(item));
           }
-          print(mCart[0].name);
-          emit(CartViewSuccess_State(cartList: mCart));
+          emit(CartSuccess_State(cartList: mCart));
         } else {
-          emit(CartError_State(errorMsg: 'print $res["message"]'));
+          emit(CartError_State(errorMsg: '${res["message"]}'));
+        }
+      } catch (e) {
+        emit(CartError_State(errorMsg: e.toString()));
+      }
+    });
+    on<DecrementProductCountEvent>((event, emit) async {
+      emit(CartLoading_State());
+      try {
+        var res = await cartRepo.decrementProductCount(
+          event.product_id,
+          event.quantity,
+        );
+        print(res);
+        var cart = await cartRepo.fetchCart();
+        if (cart["status"]) {
+          List<CartModel> mCart = [];
+          for (var item in res["data"]) {
+            mCart.add(CartModel.fromJson(item));
+          }
+          emit(CartSuccess_State(cartList: mCart));
+        } else {
+          emit(CartError_State(errorMsg: '${res["message"]}'));
         }
       } catch (e) {
         emit(CartError_State(errorMsg: e.toString()));

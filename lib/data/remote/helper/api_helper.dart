@@ -51,7 +51,7 @@ class ApiHelper {
       return returnResponse(response: res);
     } on SocketException catch (e) {
       //SocketException == Network Issue
-      throw NoInternetException(errorMessage: "");
+      throw NoInternetException(errorMessage: "${e.toString}");
     }
   }
 

@@ -33,10 +33,14 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final textTheme = theme.textTheme;
+
     return Form(
       key: _formKey,
       child: Scaffold(
-        backgroundColor: const Color(0xffe3e3e3),
+        backgroundColor: colorScheme.background,
         body: Padding(
           padding: const EdgeInsets.all(24.0),
           child: CustomScrollView(
@@ -81,10 +85,10 @@ class _LoginPageState extends State<LoginPage> {
                           labelText: 'Email',
                           prefixIcon: Icon(
                             Icons.email_outlined,
-                            color: Color(0xffff650e),
+                            color: colorScheme.primary,
                           ),
                           focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Color(0xffff650e)),
+                            borderSide: BorderSide(color: colorScheme.primary),
                             borderRadius: BorderRadius.circular(12.0),
                           ),
                           enabledBorder: OutlineInputBorder(
@@ -121,7 +125,7 @@ class _LoginPageState extends State<LoginPage> {
                           labelText: 'Password',
                           prefixIcon: Icon(
                             Icons.lock_outline,
-                            color: Color(0xffff650e),
+                            color: colorScheme.primary,
                           ),
                           suffixIcon: InkWell(
                             onTap: () {
@@ -134,7 +138,7 @@ class _LoginPageState extends State<LoginPage> {
                                 : const Icon(Icons.visibility_off_outlined),
                           ),
                           focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Color(0xffff650e)),
+                            borderSide: BorderSide(color: colorScheme.primary),
                             borderRadius: BorderRadius.circular(12.0),
                           ),
                           enabledBorder: OutlineInputBorder(
@@ -172,15 +176,14 @@ class _LoginPageState extends State<LoginPage> {
                                 children: [
                                   Icon(
                                     Icons.check_circle_outline,
-                                    color: Colors.white,
+                                    color: colorScheme.surface,
                                   ),
                                   SizedBox(width: 10),
                                   Expanded(
                                     child: Text(
                                       "Login Successful",
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 16,
+                                      style: textTheme.bodyLarge?.copyWith(
+                                        color: colorScheme.surface,
                                         fontWeight: FontWeight.w600,
                                       ),
                                     ),
@@ -188,7 +191,7 @@ class _LoginPageState extends State<LoginPage> {
                                 ],
                               ),
                               elevation: 6.0,
-                              backgroundColor: Colors.green,
+                              backgroundColor: colorScheme.secondary,
                               behavior: SnackBarBehavior.floating,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(12),
@@ -208,16 +211,15 @@ class _LoginPageState extends State<LoginPage> {
                                 children: [
                                   Icon(
                                     Icons.error_outline,
-                                    color: Colors.white,
+                                    color: colorScheme.surface,
                                   ),
                                   SizedBox(width: 10),
                                   Expanded(
                                     child: Text(
                                       state.errorMsg,
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 16,
+                                      style: textTheme.bodyLarge?.copyWith(
                                         fontWeight: FontWeight.w600,
+                                        color: colorScheme.surface,
                                       ),
                                     ),
                                   ),
@@ -251,7 +253,7 @@ class _LoginPageState extends State<LoginPage> {
                           }
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xffff650e),
+                          backgroundColor: colorScheme.primary,
                           padding: const EdgeInsets.symmetric(
                             horizontal: 40,
                             vertical: 15,

@@ -6,12 +6,10 @@ class CartInitial_State extends CartState {}
 
 class CartLoading_State extends CartState {}
 
-class CartSuccess_State extends CartState {}
-
-class CartViewSuccess_State extends CartState {
+class CartSuccess_State extends CartState {
   final List<CartModel> cartList;
 
-  CartViewSuccess_State({required this.cartList});
+  CartSuccess_State({required this.cartList});
 }
 
 class CartError_State extends CartState {

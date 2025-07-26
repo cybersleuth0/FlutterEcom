@@ -41,6 +41,8 @@ dependencies:
   google_fonts: ^6.2.1
   carousel_slider: ^5.1.1
   carousel_indicator: ^1.0.6
+  flutter_launcher_icons: ^0.14.4
+  rename_app: ^1.6.5
 
 dev_dependencies:
   flutter_test:
@@ -68,6 +70,15 @@ flutter:
   assets:
     - Assets/LottieAnimations/
     - Assets/image/
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "Assets/appIcon.png"
+  android_adaptive_foreground_file: "Assets/appIcon.png"
+  android_adaptive_background_file: "Assets/appIcon.png"
+  adaptive_icon_foreground: ~
+  adaptive_icon_background: ~
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
