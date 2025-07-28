@@ -8,7 +8,6 @@ import 'package:flutter_ecom/UI/ecom/dashboard/Bloc/product_bloc.dart';
 import 'package:flutter_ecom/UI/ecom/dashboard/Bloc/product_event.dart';
 import 'package:flutter_ecom/UI/ecom/dashboard/Bloc/product_state.dart';
 import 'package:flutter_ecom/utils/constants/AppConstant.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
@@ -121,23 +120,49 @@ class _HomepageState extends State<Homepage> {
                       child: Container(
                         padding: const EdgeInsets.symmetric(horizontal: 16.0),
                         decoration: BoxDecoration(
-                          color: colorScheme.surface.withOpacity(0.5),
-                          borderRadius: BorderRadius.circular(30.0),
+                          color: colorScheme.brightness == Brightness.dark
+                              ? Colors.grey.shade900
+                              : Colors.grey.shade400,
+                          borderRadius: BorderRadius.circular(15),
+                          boxShadow: colorScheme.brightness == Brightness.dark
+                              ? [
+                                  BoxShadow(
+                                    color: Colors.grey.shade800,
+                                    blurRadius: 1,
+                                    spreadRadius: 2,
+                                  ),
+                                ]
+                              : [
+                                  BoxShadow(
+                                    color: Colors.grey.shade200,
+                                    blurRadius: 1,
+                                    spreadRadius: 2,
+                                  ),
+                                ],
                         ),
                         child: Row(
                           children: [
                             Icon(
                               CupertinoIcons.search,
-                              color: colorScheme.onSurface.withOpacity(0.6),
+                              color: colorScheme.onSurface,
                             ),
                             const SizedBox(width: 10),
                             Expanded(
                               child: TextField(
+                                style: textTheme.bodyMedium?.copyWith(
+                                  color: colorScheme.onSurface,
+                                ),
                                 decoration: InputDecoration(
                                   hintText: "Search...",
                                   border: InputBorder.none,
+                                  fillColor:
+                                      colorScheme.brightness == Brightness.dark
+                                      ? Colors.grey.shade900
+                                      : Colors.grey.shade400,
                                   hintStyle: textTheme.bodyMedium?.copyWith(
-                                    color: colorScheme.onSurface.withOpacity(0.6),
+                                    color: colorScheme.onSurface,
+                                    fontSize: 16,
+                                    height: 1.5,
                                   ),
                                 ),
                               ),
@@ -145,7 +170,7 @@ class _HomepageState extends State<Homepage> {
                             Container(
                               height: 20,
                               width: 1,
-                              color: colorScheme.onSurface.withOpacity(0.4),
+                              color: colorScheme.onSurface,
                               margin: const EdgeInsets.symmetric(
                                 horizontal: 8.0,
                               ),
@@ -167,7 +192,9 @@ class _HomepageState extends State<Homepage> {
                             borderRadius: BorderRadius.circular(20.0),
                             boxShadow: [
                               BoxShadow(
-                                color: colorScheme.onBackground.withOpacity(0.1),
+                                color: colorScheme.onBackground.withOpacity(
+                                  0.1,
+                                ),
                                 spreadRadius: 2,
                                 blurRadius: 8,
                                 offset: const Offset(0, 4),
@@ -187,15 +214,17 @@ class _HomepageState extends State<Homepage> {
                                         fit: BoxFit.fill,
                                         loadingBuilder:
                                             (context, child, loadingProgress) {
-                                          if (loadingProgress == null) {
-                                            return child;
-                                          }
-                                          return Center(
-                                            child: CircularProgressIndicator(
-                                              color: colorScheme.primary,
-                                            ),
-                                          );
-                                        },
+                                              if (loadingProgress == null) {
+                                                return child;
+                                              }
+                                              return Center(
+                                                child:
+                                                    CircularProgressIndicator(
+                                                      color:
+                                                          colorScheme.primary,
+                                                    ),
+                                              );
+                                            },
                                       ),
                                     );
                                   }).toList(),
@@ -211,7 +240,7 @@ class _HomepageState extends State<Homepage> {
                                     viewportFraction: 1.0,
                                     autoPlayCurve: Curves.fastOutSlowIn,
                                     enlargeStrategy:
-                                    CenterPageEnlargeStrategy.height,
+                                        CenterPageEnlargeStrategy.height,
                                   ),
                                 ),
                               ),
@@ -231,7 +260,8 @@ class _HomepageState extends State<Homepage> {
                                         vertical: 6.0,
                                       ),
                                       decoration: BoxDecoration(
-                                        color: colorScheme.onBackground.withOpacity(0.5),
+                                        color: colorScheme.onBackground
+                                            .withOpacity(0.5),
                                         borderRadius: BorderRadius.circular(
                                           20.0,
                                         ),
@@ -241,7 +271,9 @@ class _HomepageState extends State<Homepage> {
                                         height: 8,
                                         space: 8,
                                         cornerRadius: 10,
-                                        color: colorScheme.surface.withOpacity(0.5),
+                                        color: colorScheme.surface.withOpacity(
+                                          0.5,
+                                        ),
                                         activeColor: colorScheme.surface,
                                         count: bannerImages.length,
                                         index: _currentIndex,
@@ -305,7 +337,9 @@ class _HomepageState extends State<Homepage> {
                               borderRadius: BorderRadius.circular(15.0),
                               boxShadow: [
                                 BoxShadow(
-                                  color: colorScheme.onBackground.withOpacity(0.1),
+                                  color: colorScheme.onBackground.withOpacity(
+                                    0.1,
+                                  ),
                                   spreadRadius: 1,
                                   blurRadius: 5,
                                   offset: Offset(0, 2),
@@ -321,9 +355,9 @@ class _HomepageState extends State<Homepage> {
                                     Expanded(
                                       child: ClipRRect(
                                         borderRadius:
-                                        const BorderRadius.vertical(
-                                          top: Radius.circular(15.0),
-                                        ),
+                                            const BorderRadius.vertical(
+                                              top: Radius.circular(15.0),
+                                            ),
                                         child: Center(
                                           child: Padding(
                                             padding: const EdgeInsets.all(8.0),
@@ -354,14 +388,16 @@ class _HomepageState extends State<Homepage> {
                                       ),
                                       child: Row(
                                         mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                            MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(
                                             "\u{20B9} ${state.products[index].price!}",
-                                            style: textTheme.bodyMedium?.copyWith(
-                                              color: colorScheme.onSurface.withOpacity(0.7),
-                                              fontWeight: FontWeight.bold,
-                                            ),
+                                            style: textTheme.bodyMedium
+                                                ?.copyWith(
+                                                  color: colorScheme.onSurface
+                                                      .withOpacity(0.7),
+                                                  fontWeight: FontWeight.bold,
+                                                ),
                                           ),
                                           Row(
                                             children: [
@@ -488,10 +524,7 @@ class _HomepageState extends State<Homepage> {
           backgroundColor: colorScheme.primary,
           elevation: 4.0,
           shape: CircleBorder(),
-          child: Icon(
-            CupertinoIcons.home,
-            color: colorScheme.onPrimary,
-          ),
+          child: Icon(CupertinoIcons.home, color: colorScheme.onPrimary),
         ),
       ),
       bottomNavigationBar: AnimatedContainer(

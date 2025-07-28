@@ -19,22 +19,27 @@ class _ProductDetailsState extends State<ProductDetails> {
   int _selectedTabIndex = 0;
   final List<String> _tabs = ["Description", "Specification", "Review"];
 
-  int _selectedColorIndex = 0;
-  final List<Color> _colors = [
-    Colors.brown,
-    Colors.black,
-    Colors.blueAccent,
-    Colors.yellow,
-    Colors.grey,
-  ];
   int _productCount = 1;
+  int _selectedColorIndex = 0;
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final textTheme = theme.textTheme;
+    final colorScheme = theme.colorScheme;
+
+    final List<Color> _colors = [
+      Colors.brown,
+      Colors.red,
+      Colors.blueAccent,
+      Colors.yellow,
+      Colors.grey,
+    ];
+
     final detailedModel =
         ModalRoute.of(context)!.settings.arguments as ProductModel;
     return Scaffold(
-      backgroundColor: Color(0xffF5F5F5),
+      backgroundColor: colorScheme.background,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         automaticallyImplyLeading: false,
@@ -49,14 +54,17 @@ class _ProductDetailsState extends State<ProductDetails> {
                   onTap: () {
                     Navigator.pop(context);
                   },
-                  child: const Icon(CupertinoIcons.back),
+                  child: Icon(
+                    CupertinoIcons.back,
+                    color: colorScheme.onSurface,
+                  ),
                 ),
                 const Spacer(),
-                const Padding(
+                Padding(
                   padding: EdgeInsets.only(right: 16.0),
-                  child: Icon(Icons.share),
+                  child: Icon(Icons.share, color: colorScheme.onSurface),
                 ),
-                const Icon(CupertinoIcons.heart),
+                Icon(CupertinoIcons.heart, color: colorScheme.onSurface),
               ],
             ),
           ),
@@ -74,7 +82,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                 child: Container(
                   height: 300,
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: colorScheme.surface.withOpacity(0.5),
                     boxShadow: [
                       BoxShadow(
                         color: Colors.grey.withOpacity(0.3),
@@ -98,13 +106,7 @@ class _ProductDetailsState extends State<ProductDetails> {
               const SizedBox(height: 16),
               //Product Name Text
               //name
-              Text(
-                detailedModel.name!,
-                style: GoogleFonts.lato(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+              Text(detailedModel.name!, style: textTheme.displaySmall),
               const SizedBox(height: 8),
               //Seller name and product price
               Row(
@@ -113,11 +115,14 @@ class _ProductDetailsState extends State<ProductDetails> {
                   //price
                   Text(
                     "₹${detailedModel.price!}",
-                    style: GoogleFonts.roboto(
-                      fontSize: 20,
+                    style: textTheme.headlineSmall?.copyWith(
                       color: Colors.green,
-                      fontWeight: FontWeight.bold,
                     ),
+                    // style: GoogleFonts.roboto(
+                    //   fontSize: 20,
+                    //   color: Colors.green,
+                    //   fontWeight: FontWeight.bold,
+                    // ),
                   ),
                   Row(
                     children: [
@@ -132,18 +137,24 @@ class _ProductDetailsState extends State<ProductDetails> {
                           children: [
                             TextSpan(
                               text: "Seller Name: ",
-                              style: GoogleFonts.openSans(
-                                fontSize: 18,
-                                color: Colors.black,
-                              ),
+                              // style: GoogleFonts.openSans(
+                              //   fontSize: 18,
+                              //   color: Colors.black,
+                              // )
+                              style: textTheme.headlineSmall,
                             ),
                             TextSpan(
                               text: "Ayush Shende",
-                              style: GoogleFonts.raleway(
-                                fontSize: 16,
+                              // style: GoogleFonts.raleway(
+                              //   fontSize: 16,
+                              //   color: Colors.blueGrey,
+                              //   fontWeight: FontWeight.w500,
+                              //   fontStyle: FontStyle.italic,
+                              // )
+                              style: textTheme.headlineSmall?.copyWith(
                                 color: Colors.blueGrey,
-                                fontWeight: FontWeight.w500,
                                 fontStyle: FontStyle.italic,
+                                fontWeight: FontWeight.w500,
                               ),
                             ),
                           ],
@@ -161,8 +172,12 @@ class _ProductDetailsState extends State<ProductDetails> {
                   const SizedBox(width: 4),
                   Text(
                     "4.2",
-                    style: GoogleFonts.montserrat(
-                      fontSize: 16,
+                    // style: GoogleFonts.montserrat(
+                    //   fontSize: 16,
+                    //   fontWeight: FontWeight.bold,
+                    //   color: Colors.orange,
+                    // )
+                    style: textTheme.titleLarge?.copyWith(
                       fontWeight: FontWeight.bold,
                       color: Colors.orange,
                     ),
@@ -170,8 +185,11 @@ class _ProductDetailsState extends State<ProductDetails> {
                   const SizedBox(width: 8),
                   Text(
                     "(320 Reviews)",
-                    style: GoogleFonts.poppins(
-                      fontSize: 16,
+                    // style: GoogleFonts.poppins(
+                    //   fontSize: 16,
+                    //   color: Colors.grey[600],
+                    // )
+                    style: textTheme.bodyLarge?.copyWith(
                       color: Colors.grey[600],
                     ),
                   ),
@@ -181,8 +199,11 @@ class _ProductDetailsState extends State<ProductDetails> {
               //Color Text
               Text(
                 "Color",
-                style: GoogleFonts.lato(
-                  fontSize: 18,
+                // style: GoogleFonts.lato(
+                //   fontSize: 18,
+                //   fontWeight: FontWeight.w600,
+                // )
+                style: textTheme.headlineSmall?.copyWith(
                   fontWeight: FontWeight.w600,
                 ),
               ),
@@ -207,7 +228,13 @@ class _ProductDetailsState extends State<ProductDetails> {
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           border: _selectedColorIndex == index
-                              ? Border.all(color: Colors.black, width: 3)
+                              ? Border.all(
+                                  color:
+                                      colorScheme.brightness == Brightness.dark
+                                      ? Colors.white
+                                      : Colors.black,
+                                  width: 3,
+                                )
                               : null,
                         ),
                         child: Padding(
@@ -237,7 +264,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                       ),
                       decoration: BoxDecoration(
                         color: _selectedTabIndex == index
-                            ? Color(0xffff650e)
+                            ? colorScheme.primary
                             : Colors.transparent,
                         borderRadius: BorderRadius.circular(8),
                       ),
@@ -246,15 +273,24 @@ class _ProductDetailsState extends State<ProductDetails> {
                         children: [
                           Text(
                             _tabs[index],
-                            style: GoogleFonts.nunito(
-                              fontSize: 16,
+                            // style: GoogleFonts.nunito(
+                            //   fontSize: 16,
+                            //   fontWeight: _selectedTabIndex == index
+                            //       ? FontWeight.bold
+                            //       : FontWeight.normal,
+                            //   color: _selectedTabIndex == index
+                            //       ? Colors.white
+                            //       : Colors
+                            //             .grey[700], // Text color for selected tab
+                            // ),
+                            style: textTheme.bodyLarge?.copyWith(
                               fontWeight: _selectedTabIndex == index
                                   ? FontWeight.bold
                                   : FontWeight.normal,
                               color: _selectedTabIndex == index
-                                  ? Colors.white
+                                  ? colorScheme.surface
                                   : Colors
-                                        .grey[700], // Text color for selected tab
+                                        .grey[500], // Text color for selected tab
                             ),
                           ),
                         ],
@@ -271,28 +307,46 @@ class _ProductDetailsState extends State<ProductDetails> {
                   // Description Content
                   Text(
                     "This is a detailed description of the product_detail. It highlights its key features, benefits, and specifications. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-                    style: GoogleFonts.openSans(
-                      fontSize: 15,
-                      color: Colors.grey[700],
-                      height: 1.5, // Improves readability
+                    // style: GoogleFonts.openSans(
+                    //   fontSize: 15,
+                    //   color: Colors.grey[700],
+                    //   height: 1.5,
+                    // )
+                    style: textTheme.bodyMedium?.copyWith(
+                      height: 1.5,
+                      color: colorScheme.brightness == Brightness.light
+                          ? Colors.black.withOpacity(0.8)
+                          : Colors.grey,
                     ),
                   ),
                   // Specification Content
                   Text(
                     "Product Specifications: \n- Material: High-quality leather \n- Dimensions: 10cm x 20cm x 5cm \n- Weight: 200g \n- Color Options: Brown, Black, Blue, Yellow, Grey",
-                    style: GoogleFonts.poppins(
-                      fontSize: 15,
-                      color: Colors.grey[700],
+                    // style: GoogleFonts.poppins(
+                    //   fontSize: 15,
+                    //   color: Colors.grey[700],
+                    //   height: 1.5,
+                    // )
+                    style: textTheme.bodyMedium?.copyWith(
                       height: 1.5,
+                      color: colorScheme.brightness == Brightness.light
+                          ? Colors.black.withOpacity(0.8)
+                          : Colors.grey,
                     ),
                   ),
                   // Review Content
                   Text(
                     "Customer Reviews: \n- User A: Great product_detail, highly recommended! \n- User B: Good value for money. \n- User C: Satisfied with the purchase.",
-                    style: GoogleFonts.roboto(
-                      fontSize: 15,
-                      color: Colors.grey[700],
+                    // style: GoogleFonts.roboto(
+                    //   fontSize: 15,
+                    //   color: Colors.grey[700],
+                    //   height: 1.5,
+                    // )
+                    style: textTheme.bodyMedium?.copyWith(
                       height: 1.5,
+                      color: colorScheme.brightness == Brightness.light
+                          ? Colors.black.withOpacity(0.8)
+                          : Colors.grey,
                     ),
                   ),
                 ],
@@ -320,9 +374,9 @@ class _ProductDetailsState extends State<ProductDetails> {
                             Expanded(
                               child: Text(
                                 "Adding to cart...",
-                                style: TextStyle(
+                                style: textTheme.bodyMedium?.copyWith(
+                                  height: 1.5,
                                   color: Colors.white,
-                                  fontSize: 16,
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),
@@ -330,7 +384,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                           ],
                         ),
                         elevation: 6.0,
-                        backgroundColor: Colors.green,
+                        backgroundColor: colorScheme.secondary,
                         behavior: SnackBarBehavior.floating,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
@@ -352,7 +406,12 @@ class _ProductDetailsState extends State<ProductDetails> {
                             Expanded(
                               child: Text(
                                 "Item Added to Cart",
-                                style: TextStyle(
+                                // style: TextStyle(
+                                //   color: colorScheme.surface,
+                                //   fontSize: 16,
+                                //   fontWeight: FontWeight.w600,
+                                // )
+                                style: textTheme.bodyLarge?.copyWith(
                                   color: Colors.white,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w600,
@@ -362,7 +421,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                           ],
                         ),
                         elevation: 6.0,
-                        backgroundColor: Colors.green,
+                        backgroundColor: colorScheme.secondary,
                         behavior: SnackBarBehavior.floating,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
@@ -376,14 +435,21 @@ class _ProductDetailsState extends State<ProductDetails> {
                       SnackBar(
                         content: Row(
                           children: [
-                            Icon(Icons.error_outline, color: Colors.white),
+                            Icon(
+                              Icons.error_outline,
+                              color: colorScheme.surface,
+                            ),
                             SizedBox(width: 10),
                             Expanded(
                               child: Text(
                                 state.errorMsg,
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16,
+                                // style: TextStyle(
+                                //   color: Colors.white,
+                                //   fontSize: 16,
+                                //   fontWeight: FontWeight.w600,
+                                // )
+                                style: textTheme.bodyLarge?.copyWith(
+                                  color: colorScheme.surface,
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),
@@ -422,8 +488,16 @@ class _ProductDetailsState extends State<ProductDetails> {
                         margin: EdgeInsets.symmetric(
                           horizontal: horizontalMargin,
                         ),
-                        decoration: const BoxDecoration(
+                        decoration: BoxDecoration(
                           color: Colors.black,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey,
+                              spreadRadius: 1,
+                              blurRadius: 5,
+                            ),
+                          ],
+
                           borderRadius: BorderRadius.all(Radius.circular(35)),
                         ),
                         padding: const EdgeInsets.symmetric(
@@ -462,7 +536,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                                             }
                                           });
                                         },
-                                        child: const Icon(
+                                        child: Icon(
                                           CupertinoIcons.minus,
                                           color: Colors.white,
                                           size: 20,
@@ -474,11 +548,13 @@ class _ProductDetailsState extends State<ProductDetails> {
                                         ),
                                         child: Text(
                                           _productCount.toString(),
-                                          style: GoogleFonts.lato(
-                                            fontSize: 18,
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold,
-                                          ),
+                                          // style: GoogleFonts.lato(
+                                          //   fontSize: 18,
+                                          //   color: Colors.white,
+                                          //   fontWeight: FontWeight.bold,
+                                          // ),
+                                          style: textTheme.headlineSmall
+                                              ?.copyWith(color: Colors.white),
                                         ),
                                       ),
                                       GestureDetector(
@@ -487,7 +563,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                                             _productCount++;
                                           });
                                         },
-                                        child: const Icon(
+                                        child: Icon(
                                           CupertinoIcons.add,
                                           color: Colors.white,
                                           size: 20,
@@ -509,13 +585,9 @@ class _ProductDetailsState extends State<ProductDetails> {
                                         quantity: _productCount,
                                       ),
                                     );
-                                    // Navigator.pushNamed(
-                                    //   context,
-                                    //   AppRoutes.ROUTE_CART_PAGE,
-                                    // );
                                   },
                                   style: ElevatedButton.styleFrom(
-                                    backgroundColor: const Color(0xffff650e),
+                                    backgroundColor: colorScheme.primary,
                                     padding: const EdgeInsets.symmetric(
                                       vertical: 12,
                                     ),

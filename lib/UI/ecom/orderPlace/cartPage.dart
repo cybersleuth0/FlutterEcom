@@ -48,7 +48,10 @@ class _CartpageState extends State<Cartpage> {
           ),
           title: Text(
             "My Cart",
-            style: textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+            style: textTheme.headlineMedium?.copyWith(
+              height: 1.5,
+              fontWeight: FontWeight.w600,
+            ),
           ),
         ),
       ),
@@ -86,10 +89,18 @@ class _CartpageState extends State<Cartpage> {
                             padding: EdgeInsets.only(bottom: 25),
                             itemCount: state.cartList.length,
                             itemBuilder: (context, index) {
-                              return Card(
-                                elevation: 4,
-                                shape: RoundedRectangleBorder(
+                              return Container(
+                                margin: EdgeInsets.symmetric(vertical: 8.0),
+                                decoration: BoxDecoration(
+                                  color: colorScheme.surface,
                                   borderRadius: BorderRadius.circular(15.0),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.3),
+                                      spreadRadius: 3,
+                                      blurRadius: 5,
+                                    ),
+                                  ],
                                 ),
                                 child: Padding(
                                   padding: const EdgeInsets.all(12.0),
@@ -334,14 +345,14 @@ class _CartpageState extends State<Cartpage> {
                                         ),
                                         side: BorderSide(
                                           color: colorScheme.primary,
-                                          width: 1.5,
+                                          width: 1,
                                         ),
                                       ),
                                     ),
                                     child: Text(
                                       "Apply",
                                       style: textTheme.bodyLarge?.copyWith(
-                                        color: colorScheme.primary,
+                                        color: Colors.deepOrange,
                                       ),
                                     ),
                                   ),
