@@ -75,8 +75,8 @@ class _HomepageState extends State<Homepage> {
                 ),
                 Text(
                   "Home",
-                  style: textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
+                  style: textTheme.displaySmall?.copyWith(
+                    color: colorScheme.onSurface,
                   ),
                 ),
                 InkWell(

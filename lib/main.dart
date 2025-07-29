@@ -4,20 +4,36 @@ import 'package:flutter_ecom/UI/Auth/Login/Bloc/login_Bloc.dart';
 import 'package:flutter_ecom/UI/ecom/Profile/Bloc/profile_Bloc.dart';
 import 'package:flutter_ecom/UI/ecom/dashboard/Bloc/product_bloc.dart';
 import 'package:flutter_ecom/UI/ecom/orderPlace/Bloc/orderBloc.dart';
+import 'package:flutter_ecom/UI/themeProvider.dart';
 import 'package:flutter_ecom/data/remote/helper/api_helper.dart';
 import 'package:flutter_ecom/data/remote/repositories/placeOrder_repo.dart';
 import 'package:flutter_ecom/data/remote/repositories/user_repo.dart';
 import 'package:flutter_ecom/utils/constants/AppConstant.dart';
+import 'package:provider/provider.dart';
 
 import 'UI/Auth/Signup/Bloc/signup_Bloc.dart';
 import 'UI/ecom/product_detail/Bloc/cart_Bloc.dart';
 import 'data/remote/repositories/cart_repo.dart';
 import 'data/remote/repositories/product_repo.dart';
 
-void main() {
-  runApp(
-    MultiBlocProvider(
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final themeProvider = ThemeProvider();
+  await themeProvider.loadThemePreference();
+
+  runApp(MyApp(themeProvider: themeProvider));
+}
+
+class MyApp extends StatelessWidget {
+  final ThemeProvider themeProvider;
+
+  const MyApp({Key? key, required this.themeProvider}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return MultiBlocProvider(
       providers: [
+        ChangeNotifierProvider.value(value: themeProvider),
         BlocProvider(
           create: (context) =>
               Signup_Bloc(userRepo: UserRepo(apiHelper: ApiHelper())),
@@ -40,16 +56,20 @@ void main() {
               OrderBloc(placeOrderRepo: PlaceOrderRepo(apiHelper: ApiHelper())),
         ),
       ],
-      child: MaterialApp(
-        themeMode: ThemeMode.system,
-        theme: AppThemes.lightTheme,
-        darkTheme: AppThemes.darkTheme,
-        initialRoute: AppRoutes.ROUTE_SPLASHSCREEN,
-        routes: AppRoutes.getRoutes(),
-        debugShowCheckedModeBanner: false,
+      child: Consumer<ThemeProvider>(
+        builder: (context, themeProvider, child) {
+          return MaterialApp(
+            themeMode: themeProvider.isDark ? ThemeMode.dark : ThemeMode.light,
+            theme: AppThemes.lightTheme,
+            darkTheme: AppThemes.darkTheme,
+            initialRoute: AppRoutes.ROUTE_SPLASHSCREEN,
+            routes: AppRoutes.getRoutes(),
+            debugShowCheckedModeBanner: false,
+          );
+        },
       ),
-    ),
-  );
+    );
+  }
 }
 
 class AppThemes {

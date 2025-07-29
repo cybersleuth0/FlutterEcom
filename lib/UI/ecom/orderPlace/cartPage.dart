@@ -55,36 +55,36 @@ class _CartpageState extends State<Cartpage> {
           ),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: BlocBuilder<CartBloc, CartState>(
-          bloc: context.read<CartBloc>(),
-          builder: (context, state) {
-            if (state is CartLoading_State) {
-              return SizedBox(
-                height: MediaQuery.of(context).size.height * 0.7,
-                child: Center(
-                  child: CircularProgressIndicator(
-                    color: colorScheme.primary,
-                    strokeWidth: 3,
-                    backgroundColor: colorScheme.surface,
-                  ),
+      body: BlocBuilder<CartBloc, CartState>(
+        bloc: context.read<CartBloc>(),
+        builder: (context, state) {
+          if (state is CartLoading_State) {
+            return SizedBox(
+              height: MediaQuery.of(context).size.height * 0.7,
+              child: Center(
+                child: CircularProgressIndicator(
+                  color: colorScheme.primary,
+                  strokeWidth: 3,
+                  backgroundColor: colorScheme.surface,
                 ),
-              );
+              ),
+            );
+          }
+          if (state is CartSuccess_State) {
+            // Calculate total price
+            double total = 0.0;
+            for (var item in state.cartList) {
+              final price =
+                  double.tryParse(item.price?.toString() ?? '0') ?? 0.0;
+              final quantity = item.quantity ?? 0;
+              total += price * quantity;
             }
-            if (state is CartSuccess_State) {
-              // Calculate total price
-              double total = 0.0;
-              for (var item in state.cartList) {
-                final price =
-                    double.tryParse(item.price?.toString() ?? '0') ?? 0.0;
-                final quantity = item.quantity ?? 0;
-                total += price * quantity;
-              }
-              return state.cartList.isNotEmpty
-                  ? Column(
-                      children: [
-                        Expanded(
+            return state.cartList.isNotEmpty
+                ? Column(
+                    children: [
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
                           child: ListView.builder(
                             padding: EdgeInsets.only(bottom: 25),
                             itemCount: state.cartList.length,
@@ -92,7 +92,12 @@ class _CartpageState extends State<Cartpage> {
                               return Container(
                                 margin: EdgeInsets.symmetric(vertical: 8.0),
                                 decoration: BoxDecoration(
-                                  color: colorScheme.surface,
+                                  color:
+                                      colorScheme.brightness == Brightness.dark
+                                      ? colorScheme.surfaceVariant.withOpacity(
+                                          0.5,
+                                        )
+                                      : colorScheme.surface,
                                   borderRadius: BorderRadius.circular(15.0),
                                   boxShadow: [
                                     BoxShadow(
@@ -237,36 +242,29 @@ class _CartpageState extends State<Cartpage> {
                                                             ),
                                                       ),
                                                     ),
-                                                    InkWell(
-                                                      onTap: () {},
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                            8,
-                                                          ),
-                                                      child: Container(
-                                                        padding: EdgeInsets.all(
-                                                          4,
+                                                    Container(
+                                                      padding: EdgeInsets.all(
+                                                        4,
+                                                      ),
+                                                      decoration: BoxDecoration(
+                                                        color:
+                                                        Colors.grey[200],
+                                                        borderRadius:
+                                                        BorderRadius.circular(
+                                                          8,
                                                         ),
-                                                        decoration: BoxDecoration(
-                                                          color:
-                                                              Colors.grey[200],
-                                                          borderRadius:
-                                                              BorderRadius.circular(
-                                                                8,
-                                                              ),
-                                                          border: Border.all(
-                                                            color: Colors
-                                                                .grey[300]!,
-                                                            width: 1,
-                                                          ),
-                                                        ),
-                                                        child: Icon(
-                                                          Icons.add,
-                                                          size: 20,
-                                                          color: Colors.black54,
+                                                        border: Border.all(
+                                                          color: Colors
+                                                              .grey[300]!,
+                                                          width: 1,
                                                         ),
                                                       ),
-                                                    ),
+                                                      child: Icon(
+                                                        Icons.add,
+                                                        size: 20,
+                                                        color: Colors.black54,
+                                                      ),
+                                                    )
                                                   ],
                                                 ),
                                               ],
@@ -281,7 +279,10 @@ class _CartpageState extends State<Cartpage> {
                             },
                           ),
                         ),
-                        Container(
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(3.0),
+                        child: Container(
                           decoration: BoxDecoration(
                             color: colorScheme.surface,
                             boxShadow: [
@@ -306,13 +307,15 @@ class _CartpageState extends State<Cartpage> {
                                   Expanded(
                                     child: TextField(
                                       decoration: InputDecoration(
-                                        filled: true,
-                                        fillColor: Colors.grey[100],
+                                        // filled: true,
+                                        // fillColor: Colors.grey[100],
                                         hintText: "Enter Coupon Code",
-                                        hintStyle: TextStyle(
-                                          color: Colors.grey[500],
-                                          fontSize: 15,
-                                        ),
+                                        hintStyle: textTheme.bodyLarge
+                                            ?.copyWith(
+                                              color: colorScheme.onSurface
+                                                  .withOpacity(0.5),
+                                              fontSize: 16,
+                                            ),
                                         border: OutlineInputBorder(
                                           borderRadius: BorderRadius.circular(
                                             12.0,
@@ -530,7 +533,11 @@ class _CartpageState extends State<Cartpage> {
                                             "CheckOut",
                                             style: textTheme.headlineSmall
                                                 ?.copyWith(
-                                                  color: colorScheme.surface,
+                                                  color:
+                                                      colorScheme.brightness ==
+                                                          Brightness.dark
+                                                      ? Colors.white
+                                                      : Colors.black,
                                                   letterSpacing: 0.5,
                                                 ),
                                           ),
@@ -540,69 +547,69 @@ class _CartpageState extends State<Cartpage> {
                             ],
                           ),
                         ),
-                      ],
-                    )
-                  : SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.7,
-                      child: Center(
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                CupertinoIcons.cart_fill,
-                                color: Colors.red,
-                                size: 60,
+                      ),
+                    ],
+                  )
+                : SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.7,
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              CupertinoIcons.cart_fill,
+                              color: Colors.red,
+                              size: 60,
+                            ),
+                            SizedBox(height: 20),
+                            Text(
+                              'Your cart is empty',
+                              style: textTheme.displaySmall?.copyWith(
+                                fontSize: 22,
+                                color: colorScheme.onSurface,
                               ),
-                              SizedBox(height: 20),
-                              Text(
-                                'Your cart is empty',
-                                style: textTheme.displaySmall?.copyWith(
-                                  fontSize: 22,
-                                  color: colorScheme.onSurface,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                            ],
-                          ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
                         ),
                       ),
-                    );
-            }
-            if (state is CartError_State) {
-              return SizedBox(
-                height: MediaQuery.of(context).size.height * 0.7,
-                child: Center(
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          CupertinoIcons.exclamationmark_triangle_fill,
-                          color: Colors.red,
-                          size: 60,
-                        ),
-                        SizedBox(height: 20),
-                        Text(
-                          state.errorMsg,
-                          style: textTheme.displaySmall?.copyWith(fontSize: 22),
-                          // style: GoogleFonts.lato(
-                          //   fontSize: 22,
-                          //   fontWeight: FontWeight.bold,
-                          // )
-                          textAlign: TextAlign.center,
-                        ),
-                      ],
                     ),
+                  );
+          }
+          if (state is CartError_State) {
+            return SizedBox(
+              height: MediaQuery.of(context).size.height * 0.7,
+              child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        CupertinoIcons.exclamationmark_triangle_fill,
+                        color: Colors.red,
+                        size: 60,
+                      ),
+                      SizedBox(height: 20),
+                      Text(
+                        state.errorMsg,
+                        style: textTheme.displaySmall?.copyWith(fontSize: 22),
+                        // style: GoogleFonts.lato(
+                        //   fontSize: 22,
+                        //   fontWeight: FontWeight.bold,
+                        // )
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
                   ),
                 ),
-              );
-            }
-            return Container();
-          },
-        ),
+              ),
+            );
+          }
+          return Container();
+        },
       ),
     );
   }

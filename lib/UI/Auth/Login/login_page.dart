@@ -59,7 +59,7 @@ class _LoginPageState extends State<LoginPage> {
                     const SizedBox(height: 30.0),
                     Text(
                       'Login',
-                      style: Theme.of(context).textTheme.bodyMedium,
+                      style: Theme.of(context).textTheme.displaySmall,
                     ),
                     const SizedBox(height: 20.0),
                     Text(
@@ -89,11 +89,6 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderSide: BorderSide(color: colorScheme.primary),
-                            borderRadius: BorderRadius.circular(12.0),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey.shade400),
-                            borderRadius: BorderRadius.circular(12.0),
                           ),
                           errorBorder: OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.red),
@@ -139,11 +134,6 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderSide: BorderSide(color: colorScheme.primary),
-                            borderRadius: BorderRadius.circular(12.0),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey.shade400),
-                            borderRadius: BorderRadius.circular(12.0),
                           ),
                           errorBorder: OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.red),
@@ -153,6 +143,7 @@ class _LoginPageState extends State<LoginPage> {
                             borderSide: BorderSide(color: Colors.red),
                             borderRadius: BorderRadius.circular(12.0),
                           ),
+                          border: OutlineInputBorder(),
                         ),
                         obscureText: !isPasswordVisible,
                         textInputAction: TextInputAction.done,
@@ -176,14 +167,14 @@ class _LoginPageState extends State<LoginPage> {
                                 children: [
                                   Icon(
                                     Icons.check_circle_outline,
-                                    color: colorScheme.surface,
+                                    color: Colors.white,
                                   ),
                                   SizedBox(width: 10),
                                   Expanded(
                                     child: Text(
                                       "Login Successful",
                                       style: textTheme.bodyLarge?.copyWith(
-                                        color: colorScheme.surface,
+                                        color: Colors.white,
                                         fontWeight: FontWeight.w600,
                                       ),
                                     ),
@@ -286,7 +277,7 @@ class _LoginPageState extends State<LoginPage> {
                     const SizedBox(height: 20.0),
                     Text(
                       'Forget Password ?',
-                      style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                         color: const Color(0xffff650e),
                         fontWeight: FontWeight.bold,
                       ),
@@ -301,12 +292,18 @@ class _LoginPageState extends State<LoginPage> {
                           children: [
                             TextSpan(
                               text: "Don't have an account? ",
-                              style: Theme.of(context).textTheme.bodySmall!
-                                  .copyWith(color: Colors.black54),
+                              style: Theme.of(context).textTheme.bodyMedium!
+                                  .copyWith(
+                                    color:
+                                        colorScheme.brightness ==
+                                            Brightness.dark
+                                        ? Colors.white
+                                        : Colors.black,
+                                  ),
                             ),
                             TextSpan(
                               text: "Sign up",
-                              style: Theme.of(context).textTheme.bodySmall
+                              style: Theme.of(context).textTheme.bodyMedium
                                   ?.copyWith(
                                     color: const Color(0xffff650e),
                                     fontWeight: FontWeight.bold,

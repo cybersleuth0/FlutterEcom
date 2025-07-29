@@ -92,7 +92,6 @@ class _SignupPageState extends State<SignupPage> {
                           ),
                           border: OutlineInputBorder(
                             borderSide: BorderSide(color: colorScheme.primary),
-                            borderRadius: BorderRadius.circular(12.0),
                           ),
                         ),
                         textInputAction: TextInputAction.next,
@@ -119,10 +118,7 @@ class _SignupPageState extends State<SignupPage> {
                             Icons.phone_outlined,
                             color: colorScheme.primary,
                           ),
-                          border: OutlineInputBorder(
-                            borderSide: BorderSide(color: colorScheme.primary),
-                            borderRadius: BorderRadius.circular(12.0),
-                          ),
+                          border: OutlineInputBorder(),
                         ),
                         textInputAction: TextInputAction.next,
                         keyboardType: TextInputType.phone,
@@ -149,10 +145,7 @@ class _SignupPageState extends State<SignupPage> {
                             Icons.email_outlined,
                             color: colorScheme.primary,
                           ),
-                          border: OutlineInputBorder(
-                            borderSide: BorderSide(color: colorScheme.primary),
-                            borderRadius: BorderRadius.circular(12.0),
-                          ),
+                          border: OutlineInputBorder(),
                         ),
                         textInputAction: TextInputAction.next,
                         keyboardType: TextInputType.emailAddress,
@@ -198,10 +191,7 @@ class _SignupPageState extends State<SignupPage> {
                                 ? const Icon(Icons.visibility_outlined)
                                 : const Icon(Icons.visibility_off_outlined),
                           ),
-                          border: OutlineInputBorder(
-                            borderSide: BorderSide(color: colorScheme.primary),
-                            borderRadius: BorderRadius.circular(12.0),
-                          ),
+                          border: OutlineInputBorder(),
                         ),
                         obscureText: !isPasswordVisible,
                         textInputAction: TextInputAction.next,
@@ -228,11 +218,7 @@ class _SignupPageState extends State<SignupPage> {
                             Icons.lock_outline,
                             color: colorScheme.primary,
                           ),
-                          border: OutlineInputBorder(
-                            borderSide: BorderSide(color: colorScheme.primary),
-
-                            borderRadius: BorderRadius.circular(12.0),
-                          ),
+                          border: OutlineInputBorder(),
                           suffixIcon: InkWell(
                             onTap: () {
                               setState(() {
@@ -253,6 +239,7 @@ class _SignupPageState extends State<SignupPage> {
                     BlocListener<Signup_Bloc, Signup_State>(
                       listener: (context, state) {
                         if (state is SignupLoadingState) {
+                          Center(child: CircularProgressIndicator());
                           setState(() {
                             isLoading = true;
                           });
@@ -343,6 +330,11 @@ class _SignupPageState extends State<SignupPage> {
                               "email": _emailCtrl.text.trim(),
                               "password": _passwordCtrl.text.trim(),
                             };
+                            print(mParams["name"]);
+                            print(mParams["mobile_number"]);
+                            print(mParams["email"]);
+                            print(mParams["password"]);
+
                             context.read<Signup_Bloc>().add(
                               Register_Event(bodyParams: mParams),
                             );
@@ -388,12 +380,18 @@ class _SignupPageState extends State<SignupPage> {
                           children: [
                             TextSpan(
                               text: "Already have an account? ",
-                              style: Theme.of(context).textTheme.bodySmall!
-                                  .copyWith(color: Colors.black54),
+                              style: Theme.of(context).textTheme.bodyMedium!
+                                  .copyWith(
+                                    color:
+                                        colorScheme.brightness ==
+                                            Brightness.dark
+                                        ? Colors.white
+                                        : Colors.black,
+                                  ),
                             ),
                             TextSpan(
                               text: "Sign in",
-                              style: Theme.of(context).textTheme.bodySmall
+                              style: Theme.of(context).textTheme.bodyMedium
                                   ?.copyWith(
                                     color: const Color(0xffff650e),
                                     fontWeight: FontWeight.bold,

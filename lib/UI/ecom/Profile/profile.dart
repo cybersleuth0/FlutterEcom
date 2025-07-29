@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_ecom/UI/ecom/Profile/Bloc/profile_Bloc.dart';
 import 'package:flutter_ecom/UI/ecom/Profile/Bloc/profile_Event.dart';
 import 'package:flutter_ecom/UI/ecom/Profile/Bloc/profile_State.dart';
+import 'package:flutter_ecom/UI/themeProvider.dart';
 import 'package:flutter_ecom/utils/constants/AppConstant.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -14,6 +15,8 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  bool _isDarkMode = false;
+
   @override
   void initState() {
     super.initState();
@@ -106,6 +109,32 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   ),
                   SizedBox(height: 20),
+                  // Add the Toggle Button for Dark/Light Theme here
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 5.0),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            'Dark Mode',
+                            style: textTheme.titleMedium,
+                          ),
+                        ),
+                        Transform.scale(
+                          scale: 0.8,
+                          child: Switch(
+                            value: context.watch<ThemeProvider>().isDark,
+                            onChanged: (value) async {
+                              await context.read<ThemeProvider>().toggleTheme(
+                                value,
+                              );
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
                   _buildProfileDetailRow(
                     Icons.person,
                     'Name',
@@ -128,7 +157,6 @@ class _ProfilePageState extends State<ProfilePage> {
                         ? "Active"
                         : "Inactive",
                   ),
-                  Divider(height: 30, thickness: 1, color: Colors.black),
                   _buildProfileDetailRow(
                     Icons.calendar_today,
                     'Joined On',
@@ -174,7 +202,9 @@ class _ProfilePageState extends State<ProfilePage> {
                           child: Text(
                             'Logout',
                             style: textTheme.headlineSmall?.copyWith(
-                              color: colorScheme.surface,
+                              color: colorScheme.brightness == Brightness.dark
+                                  ? Colors.white
+                                  : Colors.black,
                             ),
                           ),
                         ),
@@ -201,7 +231,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             color: colorScheme.onBackground,
                           ),
 
-                          textAlign: TextAlign.center,
+                          // textAlign: TextAlign.center,
                         ),
                         SizedBox(height: 10),
                         Text(
@@ -210,7 +240,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             fontSize: 16,
                             color: Colors.grey[800],
                           ),
-                          textAlign: TextAlign.center,
+                          // textAlign: TextAlign.center,
                         ),
                       ],
                     ),

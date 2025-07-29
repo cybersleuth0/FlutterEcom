@@ -11,7 +11,6 @@ class Signup_Bloc extends Bloc<Signup_Event, Signup_State> {
       emit(SignupLoadingState());
       try {
         var res = await userRepo.registerUser(bodyParams: event.bodyParams);
-
         if (res["status"]) {
           emit(SignupSuccessState());
         } else {
