@@ -77,8 +77,8 @@ Follow these steps to get a local copy of the project up and running on your mac
 
 1.  **Clone the repository:**
     ```bash
-    git clone https://github.com/cybersleuth0/FlutterEcom.git
-    cd FlutterEcom
+    git clone https://github.com/cybersleuth0/ShopSphere.git
+    cd ShopSphere
     ```
 
 2.  **Install dependencies:**
