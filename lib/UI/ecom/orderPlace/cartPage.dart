@@ -79,8 +79,35 @@ class _CartpageState extends State<Cartpage> {
               final quantity = item.quantity ?? 0;
               total += price * quantity;
             }
-            return state.cartList.isNotEmpty
-                ? Column(
+            return state.cartList.isEmpty
+                ? SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.7,
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              CupertinoIcons.cart_fill,
+                              color: Colors.red,
+                              size: 66,
+                            ),
+                            SizedBox(height: 20),
+                            Text(
+                              'Your cart is empty',
+                              style: textTheme.displaySmall?.copyWith(
+                                fontSize: 22,
+                                color: colorScheme.onSurface,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  )
+                : Column(
                     children: [
                       Expanded(
                         child: Padding(
@@ -247,15 +274,14 @@ class _CartpageState extends State<Cartpage> {
                                                         4,
                                                       ),
                                                       decoration: BoxDecoration(
-                                                        color:
-                                                        Colors.grey[200],
+                                                        color: Colors.grey[200],
                                                         borderRadius:
-                                                        BorderRadius.circular(
-                                                          8,
-                                                        ),
+                                                            BorderRadius.circular(
+                                                              8,
+                                                            ),
                                                         border: Border.all(
-                                                          color: Colors
-                                                              .grey[300]!,
+                                                          color:
+                                                              Colors.grey[300]!,
                                                           width: 1,
                                                         ),
                                                       ),
@@ -264,7 +290,7 @@ class _CartpageState extends State<Cartpage> {
                                                         size: 20,
                                                         color: Colors.black54,
                                                       ),
-                                                    )
+                                                    ),
                                                   ],
                                                 ),
                                               ],
@@ -474,7 +500,11 @@ class _CartpageState extends State<Cartpage> {
                                             children: [
                                               Icon(
                                                 Icons.check_circle_outline,
-                                                color: colorScheme.surface,
+                                                color:
+                                                    colorScheme.brightness ==
+                                                        Brightness.dark
+                                                    ? Colors.white
+                                                    : Colors.black,
                                               ),
                                               SizedBox(width: 10),
                                               Expanded(
@@ -525,8 +555,17 @@ class _CartpageState extends State<Cartpage> {
                                     ),
                                     child: isLoading
                                         ? Center(
-                                            child: CircularProgressIndicator(
-                                              color: colorScheme.surface,
+                                            child: SizedBox(
+                                              height: 24,
+                                              width: 24,
+                                              child: CircularProgressIndicator(
+                                                strokeWidth: 3,
+                                                color:
+                                                    colorScheme.brightness ==
+                                                        Brightness.dark
+                                                    ? Colors.white
+                                                    : Colors.black,
+                                              ),
                                             ),
                                           )
                                         : Text(
@@ -544,38 +583,12 @@ class _CartpageState extends State<Cartpage> {
                                   ),
                                 ),
                               ),
+                              SizedBox(height: 10),
                             ],
                           ),
                         ),
                       ),
                     ],
-                  )
-                : SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.7,
-                    child: Center(
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              CupertinoIcons.cart_fill,
-                              color: Colors.red,
-                              size: 60,
-                            ),
-                            SizedBox(height: 20),
-                            Text(
-                              'Your cart is empty',
-                              style: textTheme.displaySmall?.copyWith(
-                                fontSize: 22,
-                                color: colorScheme.onSurface,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
                   );
           }
           if (state is CartError_State) {
@@ -594,7 +607,9 @@ class _CartpageState extends State<Cartpage> {
                       ),
                       SizedBox(height: 20),
                       Text(
-                        state.errorMsg,
+                        state.errorMsg == "Cart data not found"
+                            ? "Cart is Empty"
+                            : state.errorMsg,
                         style: textTheme.displaySmall?.copyWith(fontSize: 22),
                         // style: GoogleFonts.lato(
                         //   fontSize: 22,
