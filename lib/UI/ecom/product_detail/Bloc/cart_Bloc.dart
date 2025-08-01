@@ -18,11 +18,9 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         if (res["status"] == "true" || res["status"]) {
           emit(CartSuccess_State(cartList: []));
         } else {
-          print(res["message"]);
           emit(CartError_State(errorMsg: '${res["message"]}'));
         }
       } catch (e) {
-        print(e.toString());
         emit(CartError_State(errorMsg: e.toString()));
       }
     });

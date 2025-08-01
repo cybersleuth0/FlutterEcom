@@ -330,10 +330,6 @@ class _SignupPageState extends State<SignupPage> {
                               "email": _emailCtrl.text.trim(),
                               "password": _passwordCtrl.text.trim(),
                             };
-                            print(mParams["name"]);
-                            print(mParams["mobile_number"]);
-                            print(mParams["email"]);
-                            print(mParams["password"]);
 
                             context.read<Signup_Bloc>().add(
                               Register_Event(bodyParams: mParams),
